@@ -1,0 +1,80 @@
+// This file is the control panel for the whole site.
+// Add, remove or swap feed URLs here — nothing else needs to change.
+//
+// IMPORTANT: RSS feed URLs on Indian news sites change without notice.
+// Before you rely on this, run `node scripts/check-feeds.mjs` from the
+// project root — it pings every feed below and tells you which ones
+// are alive. Replace any that fail. A good replacement is usually
+// "<site name> rss feed <category>" in a search engine.
+
+export type Category = {
+  slug: string;
+  label: string;
+  // Tailwind color used for this category's tag/accent
+  color: "wire" | "teal" | "mustard" | "ink";
+  feeds: string[];
+};
+
+export const categories: Category[] = [
+  {
+    slug: "top",
+    label: "Top Stories",
+    color: "wire",
+    feeds: [
+      "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+      "https://feeds.feedburner.com/ndtvnews-top-stories",
+      "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
+    ]
+  },
+  {
+    slug: "entertainment",
+    label: "Entertainment",
+    color: "mustard",
+    feeds: [
+      "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
+      "https://www.bollywoodhungama.com/rss/news.xml"
+    ]
+  },
+  {
+    slug: "bollywood",
+    label: "Bollywood",
+    color: "mustard",
+    feeds: [
+      "https://www.bollywoodhungama.com/rss/news.xml"
+    ]
+  },
+  {
+    slug: "hollywood",
+    label: "Hollywood",
+    color: "teal",
+    feeds: [
+      "https://deadline.com/feed/",
+      "https://variety.com/feed/"
+    ]
+  },
+  {
+    slug: "crime",
+    label: "Crime",
+    color: "ink",
+    // IndiaTV runs a dedicated crime-beat feed; NDTV's general India feed
+    // is mixed in too since it regularly carries crime stories and (unlike
+    // the IndiaTV feed) includes images.
+    feeds: [
+      "https://www.indiatvnews.com/rssnews/topstory-crime.xml",
+      "https://feeds.feedburner.com/ndtvnews-india-news"
+    ]
+  },
+  {
+    slug: "politics",
+    label: "Politics",
+    color: "teal",
+    feeds: [
+      "https://www.indiatoday.in/rss/1206514",
+      "https://www.indiatoday.in/rss/home"
+    ]
+  }
+];
+
+export function getCategory(slug: string): Category | undefined {
+  return categories.find((c) => c.slug === slug);
+}
