@@ -8,7 +8,9 @@ const accentDot: Record<string, string> = {
   wire: "bg-wire",
   teal: "bg-teal",
   mustard: "bg-mustard",
-  ink: "bg-ink"
+  ink: "bg-ink",
+  rose: "bg-rose",
+  navy: "bg-navy"
 };
 
 export const revalidate = 900;

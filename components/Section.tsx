@@ -2,13 +2,15 @@ import Link from "next/link";
 import { Article } from "@/lib/types";
 import { RowCard } from "./NewsCard";
 
-type AccentColor = "wire" | "teal" | "mustard" | "ink";
+type AccentColor = "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
 
 const accentClasses: Record<AccentColor, string> = {
   wire: "bg-wire",
   teal: "bg-teal",
   mustard: "bg-mustard",
-  ink: "bg-ink"
+  ink: "bg-ink",
+  rose: "bg-rose",
+  navy: "bg-navy"
 };
 
 export default function Section({

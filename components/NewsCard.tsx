@@ -2,13 +2,15 @@ import Image from "next/image";
 import { Article } from "@/lib/types";
 import { timeAgo } from "@/lib/time";
 
-type AccentColor = "wire" | "teal" | "mustard" | "ink";
+type AccentColor = "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
 
 const accentClasses: Record<AccentColor, string> = {
   wire: "bg-wire",
   teal: "bg-teal",
   mustard: "bg-mustard",
-  ink: "bg-ink"
+  ink: "bg-ink",
+  rose: "bg-rose",
+  navy: "bg-navy"
 };
 
 function Meta({ article, accent }: { article: Article; accent: AccentColor }) {
@@ -44,7 +46,7 @@ export function FeaturedCard({
         {article.image ? (
           <Image
             src={article.image}
-            alt=""
+            alt={article.title}
             fill
             unoptimized
             className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
@@ -108,7 +110,7 @@ export function RowCard({
         {article.image ? (
           <Image
             src={article.image}
-            alt=""
+            alt={article.title}
             fill
             unoptimized
             className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"

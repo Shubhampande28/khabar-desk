@@ -13,7 +13,9 @@ const config: Config = {
         paperdim: "#E7E2D4",
         wire: "#C0392B",
         teal: "#2F6F6B",
-        mustard: "#C98A2C"
+        mustard: "#C98A2C",
+        rose: "#B0456E",
+        navy: "#2B4570"
       },
       fontFamily: {
         serif: ["var(--font-headline)", "Georgia", "serif"],

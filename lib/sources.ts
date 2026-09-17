@@ -11,7 +11,7 @@ export type Category = {
   slug: string;
   label: string;
   // Tailwind color used for this category's tag/accent
-  color: "wire" | "teal" | "mustard" | "ink";
+  color: "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
   feeds: string[];
 };
 
@@ -38,7 +38,7 @@ export const categories: Category[] = [
   {
     slug: "bollywood",
     label: "Bollywood",
-    color: "mustard",
+    color: "rose",
     feeds: [
       "https://www.bollywoodhungama.com/rss/news.xml"
     ]
@@ -67,7 +67,7 @@ export const categories: Category[] = [
   {
     slug: "politics",
     label: "Politics",
-    color: "teal",
+    color: "navy",
     feeds: [
       "https://www.indiatoday.in/rss/1206514",
       "https://www.indiatoday.in/rss/home"
