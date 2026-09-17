@@ -1,16 +1,18 @@
+import { SITE_NAME } from "@/lib/site";
+
 export const metadata = {
   title: "About",
-  description: "What Khabar Desk is and how it works."
+  description: `What ${SITE_NAME} is and how it works.`
 };
 
 export default function AboutPage() {
   return (
     <section className="mx-auto max-w-2xl py-10">
-      <h1 className="font-serif text-3xl text-ink">About Khabar Desk</h1>
+      <h1 className="font-serif text-3xl text-ink">About {SITE_NAME}</h1>
 
       <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink/80">
         <p>
-          Khabar Desk is an independent, one-person news aggregator. It
+          {SITE_NAME} is an independent, one-person news aggregator. It
           brings together headlines from public RSS feeds across Top
           Stories, Entertainment, Bollywood, Hollywood, Crime and Politics,
           so you can scan what's happening across categories without
@@ -19,7 +21,7 @@ export default function AboutPage() {
         <p>
           Every headline links directly back to the original publisher —
           Times of India, NDTV, Hindustan Times, India Today, Bollywood
-          Hungama, Variety, Deadline, IndiaTV and others. Khabar Desk
+          Hungama, Variety, Deadline, IndiaTV and others. {SITE_NAME}
           doesn't republish full articles; it's a pointer to where the
           actual reporting lives.
         </p>

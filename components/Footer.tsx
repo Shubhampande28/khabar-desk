@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_NAME } from "@/lib/site";
 
 export default function Footer() {
   return (
@@ -6,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 text-xs leading-relaxed text-ink/50 sm:px-6">
         <p>
           Headlines and images on this site are pulled from public RSS feeds
-          of the linked publishers and belong to them. Khabar Desk only links
+          of the linked publishers and belong to them. {SITE_NAME} only links
           out to the original articles — click any headline to read the full
           story on the source's own site.
         </p>
@@ -26,7 +27,7 @@ export default function Footer() {
           </Link>
         </nav>
 
-        <p className="mt-4">© {new Date().getFullYear()} Khabar Desk.</p>
+        <p className="mt-4">© {new Date().getFullYear()} {SITE_NAME}.</p>
       </div>
     </footer>
   );

@@ -1,4 +1,4 @@
-# Khabar Desk
+# Khabar Adda
 
 A sectioned news aggregator — Top Stories, Entertainment, Bollywood,
 Hollywood, Crime, Politics — built from public RSS feeds. No paid API,

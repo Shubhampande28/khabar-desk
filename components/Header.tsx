@@ -9,7 +9,7 @@ export default function Header({ ticker }: { ticker: Article[] }) {
       <div className="mx-auto flex max-w-6xl items-baseline justify-between px-4 py-6 sm:px-6">
         <Link href="/" className="group">
           <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
-            Khabar Desk
+            Khabar Adda
           </span>
           <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
             {SITE_TAGLINE}

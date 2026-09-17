@@ -2,7 +2,7 @@ import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Terms of Service",
-  description: "Terms for using Khabar Desk."
+  description: `Terms for using ${SITE_NAME}.`
 };
 
 export default function TermsPage() {

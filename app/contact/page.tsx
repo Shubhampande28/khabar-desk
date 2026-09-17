@@ -1,8 +1,8 @@
-import { CONTACT_EMAIL } from "@/lib/site";
+import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Contact",
-  description: "How to reach Khabar Desk."
+  description: `How to reach ${SITE_NAME}.`
 };
 
 export default function ContactPage() {
@@ -25,7 +25,7 @@ export default function ContactPage() {
         </p>
         <p>
           If you're a publisher and would like your feed removed from
-          Khabar Desk, email the above and it'll be taken down promptly.
+          {" "}{SITE_NAME}, email the above and it'll be taken down promptly.
         </p>
       </div>
     </section>

@@ -2,7 +2,7 @@ import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "How Khabar Desk handles data and cookies."
+  description: `How ${SITE_NAME} handles data and cookies.`
 };
 
 export default function PrivacyPage() {
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           <p className="mt-2">
             This site is hosted on Vercel, which may log standard technical
             data (IP address, browser type, request timing) as part of
-            normal web server operation. Khabar Desk does not access or
+            normal web server operation. {SITE_NAME} does not access or
             sell this data.
           </p>
         </div>
