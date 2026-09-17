@@ -39,8 +39,12 @@ export const categories: Category[] = [
     slug: "bollywood",
     label: "Bollywood",
     color: "rose",
+    // Pinkvilla has a real feed but almost none of its items carry an
+    // image (1/50 in testing) — reusing TOI's entertainment feed instead,
+    // which is heavy on Bollywood coverage and has an image on every item.
     feeds: [
-      "https://www.bollywoodhungama.com/rss/news.xml"
+      "https://www.bollywoodhungama.com/rss/news.xml",
+      "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms"
     ]
   },
   {

@@ -39,7 +39,11 @@ function extractImage(item: any): string | null {
   if (item.enclosure?.url) return item.enclosure.url;
   const html: string | undefined = item["content:encoded"] || item.content;
   if (html) {
-    const match = html.match(/<img[^>]+src="([^">]+)"/i);
+    // Some publishers (e.g. Pinkvilla) lazy-load images with data-src
+    // instead of src, so try that as a fallback.
+    const match =
+      html.match(/<img[^>]+src="([^">]+)"/i) ||
+      html.match(/<img[^>]+data-src="([^">]+)"/i);
     if (match) return match[1];
   }
   return null;
@@ -103,11 +107,53 @@ export async function getArticlesForFeeds(
     return true;
   });
 
-  deduped.sort((a, b) => {
-    const dateA = a.isoDate ? new Date(a.isoDate).getTime() : 0;
-    const dateB = b.isoDate ? new Date(b.isoDate).getTime() : 0;
-    return dateB - dateA;
-  });
+  deduped.sort(byDateDesc);
 
-  return { articles: deduped.slice(0, limit), failedFeeds };
+  const diversified = capBySource(deduped, limit);
+
+  return { articles: diversified.slice(0, limit), failedFeeds };
+}
+
+function dateOf(a: Article): number {
+  return a.isoDate ? new Date(a.isoDate).getTime() : 0;
+}
+
+function byDateDesc(a: Article, b: Article): number {
+  return dateOf(b) - dateOf(a);
+}
+
+// A pure "sort by date" merge lets whichever source publishes most
+// frequently crowd out every other feed entirely — if two fast sources
+// each have `limit`-worth of articles newer than anything a slower third
+// source has published, a simple per-source cap still lets those two fill
+// every slot before the third is ever considered. So instead: give every
+// source a guaranteed minimum share of the slots first (its freshest
+// articles up to that share), then fill whatever's left, most-recent
+// first, capped at ~1.5x fair share so no source runs away with it.
+function capBySource(sorted: Article[], limit: number): Article[] {
+  const sources = Array.from(new Set(sorted.map((a) => a.source)));
+  if (sources.length <= 1) return sorted;
+
+  const bySource = new Map<string, Article[]>();
+  for (const source of sources) bySource.set(source, []);
+  for (const article of sorted) bySource.get(article.source)!.push(article);
+
+  const minShare = Math.floor(limit / sources.length);
+  const maxShare = Math.max(minShare, Math.ceil((limit / sources.length) * 1.5));
+
+  const result: Article[] = [];
+  const leftoverPool: Article[] = [];
+
+  for (const source of sources) {
+    const articles = bySource.get(source)!;
+    result.push(...articles.slice(0, minShare));
+    leftoverPool.push(...articles.slice(minShare, maxShare));
+  }
+
+  leftoverPool.sort(byDateDesc);
+  const stillNeeded = limit - result.length;
+  result.push(...leftoverPool.slice(0, Math.max(0, stillNeeded)));
+
+  result.sort(byDateDesc);
+  return result;
 }
