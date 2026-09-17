@@ -51,7 +51,12 @@ export default function Section({
       ) : (
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
           {shown.map((article) => (
-            <RowCard key={article.link} article={article} accent={color} />
+            <RowCard
+              key={article.link}
+              article={article}
+              accent={color}
+              category={{ slug, label }}
+            />
           ))}
         </div>
       )}

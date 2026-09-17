@@ -1,8 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Article } from "@/lib/types";
 import { timeAgo } from "@/lib/time";
+import { encodeStorySlug } from "@/lib/story";
 
 type AccentColor = "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
+type CardCategory = { slug: string; label: string };
 
 const accentClasses: Record<AccentColor, string> = {
   wire: "bg-wire",
@@ -28,20 +31,25 @@ function Meta({ article, accent }: { article: Article; accent: AccentColor }) {
   );
 }
 
+function storyHref(
+  article: Article,
+  accent: AccentColor,
+  category: CardCategory
+): string {
+  return `/story/${encodeStorySlug(article, { ...category, color: accent })}`;
+}
+
 export function FeaturedCard({
   article,
-  accent
+  accent,
+  category
 }: {
   article: Article;
   accent: AccentColor;
+  category: CardCategory;
 }) {
   return (
-    <a
-      href={article.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block"
-    >
+    <Link href={storyHref(article, accent, category)} className="group block">
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-paperdim">
         {article.image ? (
           <Image
@@ -68,46 +76,43 @@ export function FeaturedCard({
           {article.contentSnippet}…
         </p>
       )}
-    </a>
+    </Link>
   );
 }
 
 export function ListItem({
   article,
-  accent
+  accent,
+  category
 }: {
   article: Article;
   accent: AccentColor;
+  category: CardCategory;
 }) {
   return (
-    <a
-      href={article.link}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={storyHref(article, accent, category)}
       className="group block border-t border-ink/10 py-3.5 first:border-t-0 first:pt-0"
     >
       <h3 className="text-balance font-serif text-base leading-snug text-ink group-hover:underline">
         {article.title}
       </h3>
       <Meta article={article} accent={accent} />
-    </a>
+    </Link>
   );
 }
 
 export function RowCard({
   article,
-  accent
+  accent,
+  category
 }: {
   article: Article;
   accent: AccentColor;
+  category: CardCategory;
 }) {
   return (
-    <a
-      href={article.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block"
-    >
+    <Link href={storyHref(article, accent, category)} className="group block">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-paperdim">
         {article.image ? (
           <Image
@@ -127,6 +132,6 @@ export function RowCard({
         {article.title}
       </h3>
       <Meta article={article} accent={accent} />
-    </a>
+    </Link>
   );
 }

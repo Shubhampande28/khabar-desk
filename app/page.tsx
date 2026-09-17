@@ -30,11 +30,20 @@ export default async function HomePage() {
         {heroArticle ? (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
             <div className="lg:col-span-2">
-              <FeaturedCard article={heroArticle} accent="wire" />
+              <FeaturedCard
+                article={heroArticle}
+                accent="wire"
+                category={{ slug: topCategory.slug, label: topCategory.label }}
+              />
             </div>
             <div>
               {restTop.map((article) => (
-                <ListItem key={article.link} article={article} accent="wire" />
+                <ListItem
+                  key={article.link}
+                  article={article}
+                  accent="wire"
+                  category={{ slug: topCategory.slug, label: topCategory.label }}
+                />
               ))}
             </div>
           </div>

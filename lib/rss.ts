@@ -70,7 +70,7 @@ async function fetchOneFeed(url: string): Promise<Article[]> {
 
   return (feed.items || []).map((item) => ({
     title: item.title?.trim() || "Untitled",
-    link: item.link || "#",
+    link: item.link?.trim() || "#",
     source: sourceName,
     isoDate: item.isoDate || null,
     contentSnippet: item.contentSnippet?.trim().slice(0, 180) || null,

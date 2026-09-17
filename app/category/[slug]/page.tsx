@@ -66,7 +66,12 @@ export default async function CategoryPage({
         <>
           <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
             {articles.slice(0, 12).map((article) => (
-              <RowCard key={article.link} article={article} accent={category.color} />
+              <RowCard
+                key={article.link}
+                article={article}
+                accent={category.color}
+                category={{ slug: category.slug, label: category.label }}
+              />
             ))}
           </div>
 
@@ -74,7 +79,12 @@ export default async function CategoryPage({
 
           <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
             {articles.slice(12).map((article) => (
-              <RowCard key={article.link} article={article} accent={category.color} />
+              <RowCard
+                key={article.link}
+                article={article}
+                accent={category.color}
+                category={{ slug: category.slug, label: category.label }}
+              />
             ))}
           </div>
         </>
