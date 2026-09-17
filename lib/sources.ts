@@ -39,12 +39,14 @@ export const categories: Category[] = [
     slug: "bollywood",
     label: "Bollywood",
     color: "rose",
-    // Pinkvilla has a real feed but almost none of its items carry an
-    // image (1/50 in testing) — reusing TOI's entertainment feed instead,
-    // which is heavy on Bollywood coverage and has an image on every item.
+    // Single-sourced on purpose: Hungama alone has good image coverage and
+    // is genuinely Bollywood-specific. TOI's entertainment feed was tried
+    // as a second source, but it's the exact same feed already used by
+    // "Entertainment" above, which made the two categories show near-
+    // identical content. Pinkvilla was tried too, but almost none of its
+    // items carry an image (1/50 in testing) — not worth the tradeoff.
     feeds: [
-      "https://www.bollywoodhungama.com/rss/news.xml",
-      "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms"
+      "https://www.bollywoodhungama.com/rss/news.xml"
     ]
   },
   {
@@ -72,9 +74,14 @@ export const categories: Category[] = [
     slug: "politics",
     label: "Politics",
     color: "navy",
+    // rss/home is India Today's general homepage feed (cricket, gadgets,
+    // everything) — it was never politics-specific and was leaking
+    // off-topic stories into this category. IndiaTV has a real dedicated
+    // politics feed but almost no images (1 across the whole feed, same
+    // problem as Pinkvilla for Bollywood), so this stays single-sourced
+    // on India Today's Nation feed, which is both on-topic and image-rich.
     feeds: [
-      "https://www.indiatoday.in/rss/1206514",
-      "https://www.indiatoday.in/rss/home"
+      "https://www.indiatoday.in/rss/1206514"
     ]
   }
 ];
