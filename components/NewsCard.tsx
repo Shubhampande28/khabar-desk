@@ -13,21 +13,9 @@ const accentClasses: Record<AccentColor, string> = {
   navy: "bg-navy"
 };
 
-function Meta({
-  article,
-  accent,
-  light = false
-}: {
-  article: Article;
-  accent: AccentColor;
-  light?: boolean;
-}) {
+function Meta({ article, accent }: { article: Article; accent: AccentColor }) {
   return (
-    <div
-      className={`mt-1.5 flex items-center gap-2 text-xs ${
-        light ? "text-white/80" : "text-ink/60"
-      }`}
-    >
+    <div className="mt-1.5 flex items-center gap-2 text-xs text-ink/60">
       <span className={`h-1.5 w-1.5 rounded-full ${accentClasses[accent]}`} />
       <span className="font-medium">{article.source}</span>
       {article.isoDate && (
@@ -56,22 +44,13 @@ export function FeaturedCard({
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-paperdim">
         {article.image ? (
-          <>
-            <Image
-              src={article.image}
-              alt={article.title}
-              fill
-              unoptimized
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-              <h2 className="text-balance font-serif text-2xl leading-snug text-white group-hover:underline sm:text-3xl">
-                {article.title}
-              </h2>
-              <Meta article={article} accent={accent} light />
-            </div>
-          </>
+          <Image
+            src={article.image}
+            alt={article.title}
+            fill
+            unoptimized
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-ink/30">
             <span className="font-serif text-sm">No image</span>
@@ -79,14 +58,10 @@ export function FeaturedCard({
         )}
       </div>
 
-      {!article.image && (
-        <>
-          <h2 className="text-balance mt-4 font-serif text-2xl leading-snug text-ink group-hover:underline sm:text-3xl">
-            {article.title}
-          </h2>
-          <Meta article={article} accent={accent} />
-        </>
-      )}
+      <h2 className="text-balance mt-4 font-serif text-2xl leading-snug text-ink group-hover:underline sm:text-3xl">
+        {article.title}
+      </h2>
+      <Meta article={article} accent={accent} />
 
       {article.contentSnippet && (
         <p className="mt-3 text-sm leading-relaxed text-ink/70">
