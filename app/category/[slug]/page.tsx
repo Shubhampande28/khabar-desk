@@ -42,10 +42,10 @@ export default async function CategoryPage({
   );
 
   return (
-    <section className="py-8">
-      <div className="mb-6 flex items-center gap-2">
+    <section className="py-10">
+      <div className="mb-6 flex items-center gap-2.5">
         <span className={`h-2.5 w-2.5 ${accentDot[category.color]}`} />
-        <h1 className="font-serif text-2xl text-ink sm:text-3xl">
+        <h1 className="text-balance font-serif text-2xl text-ink sm:text-3xl">
           {category.label}
         </h1>
       </div>
@@ -72,7 +72,7 @@ export default async function CategoryPage({
 
           {articles.length > 12 && <AdSlot />}
 
-          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
             {articles.slice(12).map((article) => (
               <RowCard key={article.link} article={article} accent={category.color} />
             ))}

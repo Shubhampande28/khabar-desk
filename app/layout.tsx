@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Archivo } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -75,6 +76,7 @@ export default async function RootLayout({
         <Header ticker={articles} />
         <main className="mx-auto max-w-6xl px-4 sm:px-6">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

@@ -29,9 +29,9 @@ export default function Section({
   const shown = articles.slice(0, count);
 
   return (
-    <section className="border-t border-ink/15 py-8">
-      <div className="mb-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <section className="border-t border-ink/15 py-10">
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
           <span className={`h-2.5 w-2.5 ${accentClasses[color]}`} />
           <h2 className="font-serif text-xl text-ink sm:text-2xl">{label}</h2>
         </div>
@@ -49,7 +49,7 @@ export default function Section({
           down. Try again shortly, or check lib/sources.ts.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
           {shown.map((article) => (
             <RowCard key={article.link} article={article} accent={color} />
           ))}

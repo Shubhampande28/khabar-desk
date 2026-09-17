@@ -66,7 +66,7 @@ export function FeaturedCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-              <h2 className="font-serif text-2xl leading-snug text-white group-hover:underline sm:text-3xl">
+              <h2 className="text-balance font-serif text-2xl leading-snug text-white group-hover:underline sm:text-3xl">
                 {article.title}
               </h2>
               <Meta article={article} accent={accent} light />
@@ -81,7 +81,7 @@ export function FeaturedCard({
 
       {!article.image && (
         <>
-          <h2 className="mt-4 font-serif text-2xl leading-snug text-ink group-hover:underline sm:text-3xl">
+          <h2 className="text-balance mt-4 font-serif text-2xl leading-snug text-ink group-hover:underline sm:text-3xl">
             {article.title}
           </h2>
           <Meta article={article} accent={accent} />
@@ -109,9 +109,9 @@ export function ListItem({
       href={article.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block border-t border-ink/10 py-3 first:border-t-0 first:pt-0"
+      className="group block border-t border-ink/10 py-3.5 first:border-t-0 first:pt-0"
     >
-      <h3 className="font-serif text-base leading-snug text-ink group-hover:underline">
+      <h3 className="text-balance font-serif text-base leading-snug text-ink group-hover:underline">
         {article.title}
       </h3>
       <Meta article={article} accent={accent} />
@@ -148,7 +148,7 @@ export function RowCard({
           </div>
         )}
       </div>
-      <h3 className="mt-3 font-serif text-lg leading-snug text-ink group-hover:underline">
+      <h3 className="text-balance mt-3.5 font-serif text-lg leading-snug text-ink group-hover:underline">
         {article.title}
       </h3>
       <Meta article={article} accent={accent} />

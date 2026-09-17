@@ -19,8 +19,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="py-8">
-        <div className="mb-5 flex items-center gap-2">
+      <section className="py-10">
+        <div className="mb-6 flex items-center gap-2.5">
           <span className="h-2.5 w-2.5 bg-wire" />
           <h1 className="font-serif text-2xl text-ink sm:text-3xl">
             Top Stories
@@ -28,7 +28,7 @@ export default async function HomePage() {
         </div>
 
         {heroArticle ? (
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
             <div className="lg:col-span-2">
               <FeaturedCard article={heroArticle} accent="wire" />
             </div>
