@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-ink: 20 23 28;
+  --color-paper: 241 238 230;
+  --color-paperdim: 231 226 212;
+}
+
+:root.dark {
+  --color-ink: 237 233 224;
+  --color-paper: 18 20 24;
+  --color-paperdim: 28 31 37;
+}
+
 body {
-  background-color: #f1eee6;
-  color: #14171c;
+  background-color: rgb(var(--color-paper));
+  color: rgb(var(--color-ink));
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 @keyframes marquee {

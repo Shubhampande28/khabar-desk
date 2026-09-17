@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}"
@@ -8,9 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#14171C",
-        paper: "#F1EEE6",
-        paperdim: "#E7E2D4",
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        paper: "rgb(var(--color-paper) / <alpha-value>)",
+        paperdim: "rgb(var(--color-paperdim) / <alpha-value>)",
         wire: "#C0392B",
         teal: "#2F6F6B",
         mustard: "#C98A2C",

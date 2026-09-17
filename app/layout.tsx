@@ -51,7 +51,14 @@ export default async function RootLayout({
   const { articles } = await getArticlesForFeeds(topCategory.feeds, 10);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('theme');var d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`
+          }}
+        />
+      </head>
       {/*
         TODO once AdSense approves your domain: add the loader script here, e.g.
 

@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Article } from "@/lib/types";
 import { categories } from "@/lib/sources";
 import { SITE_TAGLINE } from "@/lib/site";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header({ ticker }: { ticker: Article[] }) {
   return (
     <header className="border-b border-ink/15 bg-paper">
-      <div className="mx-auto flex max-w-6xl items-baseline justify-between px-4 py-6 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6">
         <Link href="/" className="group">
           <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
             Khabar Adda
@@ -15,14 +16,17 @@ export default function Header({ ticker }: { ticker: Article[] }) {
             {SITE_TAGLINE}
           </span>
         </Link>
-        <span className="hidden font-sans text-xs text-ink/50 sm:block">
-          {new Date().toLocaleDateString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-          })}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="hidden font-sans text-xs text-ink/50 sm:block">
+            {new Date().toLocaleDateString("en-IN", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            })}
+          </span>
+          <ThemeToggle />
+        </div>
       </div>
 
       <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto border-t border-ink/10 px-4 py-2.5 text-sm sm:px-6">
