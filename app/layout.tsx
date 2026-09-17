@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { categories } from "@/lib/sources";
 import { getArticlesForFeeds } from "@/lib/rss";
+import { SITE_URL, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 const headline = Newsreader({
   subsets: ["latin"],
@@ -17,10 +18,28 @@ const body = Archivo({
   variable: "--font-body"
 });
 
+const description =
+  "Top stories, entertainment, Bollywood, Hollywood, crime and politics, pulled together in one place.";
+
 export const metadata: Metadata = {
-  title: "Khabar Desk — All the news, one page",
-  description:
-    "Top stories, entertainment, Bollywood, Hollywood, crime and politics, pulled together in one place."
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s — ${SITE_NAME}`
+  },
+  description,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description,
+    url: SITE_URL
+  },
+  twitter: {
+    card: "summary",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description
+  }
 };
 
 export default async function RootLayout({

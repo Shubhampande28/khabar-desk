@@ -19,7 +19,11 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const category = getCategory(params.slug);
-  return { title: category ? `${category.label} — Khabar Desk` : "Khabar Desk" };
+  if (!category) return { title: "Not found" };
+  return {
+    title: category.label,
+    description: `Latest ${category.label} news, updated throughout the day.`
+  };
 }
 
 export default async function CategoryPage({

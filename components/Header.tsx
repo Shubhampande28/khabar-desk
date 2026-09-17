@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { Article } from "@/lib/types";
 import { categories } from "@/lib/sources";
+import { SITE_TAGLINE } from "@/lib/site";
 
 export default function Header({ ticker }: { ticker: Article[] }) {
   return (
     <header className="border-b border-ink/15 bg-paper">
       <div className="mx-auto flex max-w-6xl items-baseline justify-between px-4 py-6 sm:px-6">
-        <Link href="/" className="font-serif text-3xl tracking-tight text-ink sm:text-4xl">
-          Khabar Desk
+        <Link href="/" className="group">
+          <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
+            Khabar Desk
+          </span>
+          <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
+            {SITE_TAGLINE}
+          </span>
         </Link>
         <span className="hidden font-sans text-xs text-ink/50 sm:block">
           {new Date().toLocaleDateString("en-IN", {
