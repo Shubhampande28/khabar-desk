@@ -5,7 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { categories } from "@/lib/sources";
-import { getArticlesForFeeds } from "@/lib/rss";
+import { getRecentArticles } from "@/lib/db";
 import { SITE_URL, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 const headline = Newsreader({
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
   const topCategory = categories.find((c) => c.slug === "top")!;
-  const { articles } = await getArticlesForFeeds(topCategory.feeds, 10);
+  const articles = getRecentArticles(topCategory.slug, 10);
 
   return (
     <html lang="en" suppressHydrationWarning>

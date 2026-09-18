@@ -1,21 +1,20 @@
 import { categories, getCategory } from "@/lib/sources";
-import { getArticlesForFeeds } from "@/lib/rss";
+import { getRecentArticles } from "@/lib/db";
 import { FeaturedCard, ListItem } from "@/components/NewsCard";
 import Section from "@/components/Section";
 import AdSlot from "@/components/AdSlot";
 
-export const revalidate = 900;
+// Data comes from a local SQLite database that a background ingestion job
+// keeps updated (see scripts/ingest.ts) — always render fresh from it
+// rather than caching a build-time snapshot.
+export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default function HomePage() {
   const topCategory = getCategory("top")!;
   const otherCategories = categories.filter((c) => c.slug !== "top");
 
-  const [topResult, ...otherResults] = await Promise.all([
-    getArticlesForFeeds(topCategory.feeds, 6),
-    ...otherCategories.map((c) => getArticlesForFeeds(c.feeds, 8))
-  ]);
-
-  const [heroArticle, ...restTop] = topResult.articles;
+  const topArticles = getRecentArticles(topCategory.slug, 6);
+  const [heroArticle, ...restTop] = topArticles;
 
   return (
     <>
@@ -49,8 +48,9 @@ export default async function HomePage() {
           </div>
         ) : (
           <p className="text-sm text-ink/50">
-            Top stories aren't loading right now. Check lib/sources.ts and
-            run scripts/check-feeds.mjs to see which feed is down.
+            Top stories aren't loading right now. Run{" "}
+            <code>npm run ingest</code> to fetch the feeds, or check
+            lib/sources.ts.
           </p>
         )}
       </section>
@@ -63,7 +63,7 @@ export default async function HomePage() {
             slug={category.slug}
             label={category.label}
             color={category.color}
-            articles={otherResults[i].articles}
+            articles={getRecentArticles(category.slug, 8)}
           />
           {i === 1 && <AdSlot />}
         </div>

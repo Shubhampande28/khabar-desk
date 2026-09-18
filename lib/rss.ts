@@ -83,10 +83,11 @@ export type FeedResult = {
   failedFeeds: string[];
 };
 
-export async function getArticlesForFeeds(
-  feedUrls: string[],
-  limit = 30
-): Promise<FeedResult> {
+// Fetches every feed, dedupes by link, sorts by date — no capping/limit
+// applied. Used by the ingestion job, which wants everything it can get so
+// the archive accumulates real history; display-time selection (capping,
+// trimming to a page size) happens separately in lib/db.ts.
+export async function fetchAllArticles(feedUrls: string[]): Promise<FeedResult> {
   const settled = await Promise.allSettled(feedUrls.map(fetchOneFeed));
 
   const articles: Article[] = [];
@@ -109,16 +110,23 @@ export async function getArticlesForFeeds(
 
   deduped.sort(byDateDesc);
 
-  const diversified = capBySource(deduped, limit);
+  return { articles: deduped, failedFeeds };
+}
 
+export async function getArticlesForFeeds(
+  feedUrls: string[],
+  limit = 30
+): Promise<FeedResult> {
+  const { articles, failedFeeds } = await fetchAllArticles(feedUrls);
+  const diversified = capBySource(articles, limit);
   return { articles: diversified.slice(0, limit), failedFeeds };
 }
 
-function dateOf(a: Article): number {
+export function dateOf(a: Article): number {
   return a.isoDate ? new Date(a.isoDate).getTime() : 0;
 }
 
-function byDateDesc(a: Article, b: Article): number {
+export function byDateDesc(a: Article, b: Article): number {
   return dateOf(b) - dateOf(a);
 }
 
@@ -130,7 +138,7 @@ function byDateDesc(a: Article, b: Article): number {
 // source a guaranteed minimum share of the slots first (its freshest
 // articles up to that share), then fill whatever's left, most-recent
 // first, capped at ~1.5x fair share so no source runs away with it.
-function capBySource(sorted: Article[], limit: number): Article[] {
+export function capBySource(sorted: Article[], limit: number): Article[] {
   const sources = Array.from(new Set(sorted.map((a) => a.source)));
   if (sources.length <= 1) return sorted;
 
