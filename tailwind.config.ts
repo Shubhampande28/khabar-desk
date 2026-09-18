@@ -12,11 +12,12 @@ const config: Config = {
         ink: "rgb(var(--color-ink) / <alpha-value>)",
         paper: "rgb(var(--color-paper) / <alpha-value>)",
         paperdim: "rgb(var(--color-paperdim) / <alpha-value>)",
-        wire: "#C0392B",
-        teal: "#2F6F6B",
-        mustard: "#C98A2C",
-        rose: "#B0456E",
-        navy: "#2B4570"
+        orange: "#F2622A",
+        amber: "#F0A028",
+        pink: "#E0457B",
+        teal: "#1B9AAA",
+        slate: "#45577A",
+        blue: "#3B6EA5"
       },
       fontFamily: {
         serif: ["var(--font-headline)", "Georgia", "serif"],

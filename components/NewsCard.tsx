@@ -4,16 +4,16 @@ import { Article } from "@/lib/types";
 import { timeAgo } from "@/lib/time";
 import { encodeStorySlug } from "@/lib/story";
 
-type AccentColor = "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
+type AccentColor = "orange" | "teal" | "amber" | "slate" | "pink" | "blue";
 type CardCategory = { slug: string; label: string };
 
 const accentClasses: Record<AccentColor, string> = {
-  wire: "bg-wire",
+  orange: "bg-orange",
   teal: "bg-teal",
-  mustard: "bg-mustard",
-  ink: "bg-ink",
-  rose: "bg-rose",
-  navy: "bg-navy"
+  amber: "bg-amber",
+  slate: "bg-slate",
+  pink: "bg-pink",
+  blue: "bg-blue"
 };
 
 function Meta({ article, accent }: { article: Article; accent: AccentColor }) {

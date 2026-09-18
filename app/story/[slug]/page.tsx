@@ -6,12 +6,12 @@ import { timeAgo } from "@/lib/time";
 import { SITE_NAME } from "@/lib/site";
 
 const accentClasses: Record<string, string> = {
-  wire: "bg-wire",
+  orange: "bg-orange",
   teal: "bg-teal",
-  mustard: "bg-mustard",
-  ink: "bg-ink",
-  rose: "bg-rose",
-  navy: "bg-navy"
+  amber: "bg-amber",
+  slate: "bg-slate",
+  pink: "bg-pink",
+  blue: "bg-blue"
 };
 
 export function generateMetadata({ params }: { params: { slug: string } }) {

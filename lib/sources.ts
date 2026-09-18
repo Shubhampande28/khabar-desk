@@ -11,7 +11,7 @@ export type Category = {
   slug: string;
   label: string;
   // Tailwind color used for this category's tag/accent
-  color: "wire" | "teal" | "mustard" | "ink" | "rose" | "navy";
+  color: "orange" | "teal" | "amber" | "slate" | "pink" | "blue";
   feeds: string[];
 };
 
@@ -19,7 +19,7 @@ export const categories: Category[] = [
   {
     slug: "top",
     label: "Top Stories",
-    color: "wire",
+    color: "orange",
     feeds: [
       "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
       "https://feeds.feedburner.com/ndtvnews-top-stories",
@@ -29,7 +29,7 @@ export const categories: Category[] = [
   {
     slug: "entertainment",
     label: "Entertainment",
-    color: "mustard",
+    color: "amber",
     feeds: [
       "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
       "https://www.bollywoodhungama.com/rss/news.xml"
@@ -38,7 +38,7 @@ export const categories: Category[] = [
   {
     slug: "bollywood",
     label: "Bollywood",
-    color: "rose",
+    color: "pink",
     // Single-sourced on purpose: Hungama alone has good image coverage and
     // is genuinely Bollywood-specific. TOI's entertainment feed was tried
     // as a second source, but it's the exact same feed already used by
@@ -61,7 +61,7 @@ export const categories: Category[] = [
   {
     slug: "crime",
     label: "Crime",
-    color: "ink",
+    color: "slate",
     // IndiaTV runs a dedicated crime-beat feed; NDTV's general India feed
     // is mixed in too since it regularly carries crime stories and (unlike
     // the IndiaTV feed) includes images.
@@ -73,7 +73,7 @@ export const categories: Category[] = [
   {
     slug: "politics",
     label: "Politics",
-    color: "navy",
+    color: "blue",
     // rss/home is India Today's general homepage feed (cricket, gadgets,
     // everything) — it was never politics-specific and was leaking
     // off-topic stories into this category. IndiaTV has a real dedicated

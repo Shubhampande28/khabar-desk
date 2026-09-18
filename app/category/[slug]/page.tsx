@@ -6,12 +6,12 @@ import { RowCard } from "@/components/NewsCard";
 import AdSlot from "@/components/AdSlot";
 
 const accentDot: Record<string, string> = {
-  wire: "bg-wire",
+  orange: "bg-orange",
   teal: "bg-teal",
-  mustard: "bg-mustard",
-  ink: "bg-ink",
-  rose: "bg-rose",
-  navy: "bg-navy"
+  amber: "bg-amber",
+  slate: "bg-slate",
+  pink: "bg-pink",
+  blue: "bg-blue"
 };
 
 // Data comes from a local SQLite database that a background ingestion job

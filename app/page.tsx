@@ -20,7 +20,7 @@ export default function HomePage() {
     <>
       <section className="py-10">
         <div className="mb-6 flex items-center gap-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-wire" />
+          <span className="h-2.5 w-2.5 rounded-full bg-orange" />
           <h1 className="font-serif text-2xl text-ink sm:text-3xl">
             Top Stories
           </h1>
@@ -31,7 +31,7 @@ export default function HomePage() {
             <div className="lg:col-span-2">
               <FeaturedCard
                 article={heroArticle}
-                accent="wire"
+                accent="orange"
                 category={{ slug: topCategory.slug, label: topCategory.label }}
               />
             </div>
@@ -40,7 +40,7 @@ export default function HomePage() {
                 <div key={article.link} className={i >= 3 ? "hidden lg:block" : ""}>
                   <ListItem
                     article={article}
-                    accent="wire"
+                    accent="orange"
                     category={{ slug: topCategory.slug, label: topCategory.label }}
                   />
                 </div>

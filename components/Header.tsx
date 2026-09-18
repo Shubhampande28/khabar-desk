@@ -19,8 +19,9 @@ export default function Header({
         <Link href="/" className="group flex items-center gap-3">
           <LogoMark className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
           <span>
-            <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
-              Khabar Adda
+            <span className="block font-sans text-2xl font-extrabold tracking-tight sm:text-3xl">
+              <span className="text-ink">Khabar</span>
+              <span className="text-orange">Adda</span>
             </span>
             <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
               {SITE_TAGLINE}

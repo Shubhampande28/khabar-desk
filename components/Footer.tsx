@@ -8,7 +8,10 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div>
-            <span className="font-serif text-xl text-ink">{SITE_NAME}</span>
+            <span className="font-sans text-xl font-extrabold tracking-tight">
+              <span className="text-ink">Khabar</span>
+              <span className="text-orange">Adda</span>
+            </span>
             <p className="mt-1 text-xs text-ink/70">{SITE_TAGLINE}</p>
           </div>
 

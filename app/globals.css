@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: 20 23 28;
-  --color-paper: 241 238 230;
-  --color-paperdim: 231 226 212;
+  --color-ink: 15 23 42;
+  --color-paper: 255 255 255;
+  --color-paperdim: 238 242 248;
 }
 
 :root.dark {
-  --color-ink: 237 233 224;
-  --color-paper: 18 20 24;
-  --color-paperdim: 28 31 37;
+  --color-ink: 226 232 240;
+  --color-paper: 10 15 30;
+  --color-paperdim: 20 27 46;
 }
 
 body {
@@ -40,6 +40,6 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #c0392b;
+  outline: 2px solid #f2622a;
   outline-offset: 2px;
 }

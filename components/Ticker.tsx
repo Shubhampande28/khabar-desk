@@ -29,7 +29,7 @@ export default function Ticker({
           {ticker.map((item, i) => (
             <Link
               key={i}
-              href={`/story/${encodeStorySlug(item, { ...category, color: "wire" })}`}
+              href={`/story/${encodeStorySlug(item, { ...category, color: "orange" })}`}
               className="hover:underline"
             >
               {item.title}
