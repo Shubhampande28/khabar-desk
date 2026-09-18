@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Newsreader, Archivo } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { categories } from "@/lib/sources";
 import { getRecentArticles } from "@/lib/db";
-import { SITE_URL, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
+import { SITE_URL, SITE_NAME, SITE_TAGLINE, GA_MEASUREMENT_ID } from "@/lib/site";
 
 const headline = Newsreader({
   subsets: ["latin"],
@@ -80,6 +81,18 @@ export default function RootLayout({
         <main className="mx-auto max-w-6xl px-4 sm:px-6">{children}</main>
         <Footer />
         <Analytics />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
