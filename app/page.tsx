@@ -64,7 +64,7 @@ export default function HomePage() {
             slug={category.slug}
             label={category.label}
             color={category.color}
-            articles={getRecentArticles(category.slug, 8)}
+            articles={getRecentArticles(category.slug, 4)}
           />
           {i === 1 && <AdSlot />}
         </div>
