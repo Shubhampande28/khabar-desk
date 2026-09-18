@@ -17,6 +17,25 @@ export type StoryPayload = {
   ac: string;
 };
 
+// Buffer only exists in Node. encodeStorySlug is now also called from a
+// client component (Ticker), so this needs to work in the browser too —
+// fall back to btoa/atob with the standard UTF-8-safe wrapping.
+function toBase64Url(str: string): string {
+  const base64 =
+    typeof Buffer !== "undefined"
+      ? Buffer.from(str, "utf-8").toString("base64")
+      : btoa(unescape(encodeURIComponent(str)));
+  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(encoded: string): string {
+  const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+  return typeof Buffer !== "undefined"
+    ? Buffer.from(padded, "base64").toString("utf-8")
+    : decodeURIComponent(escape(atob(padded)));
+}
+
 function slugifyTitle(title: string): string {
   const slug = title
     .toLowerCase()
@@ -41,9 +60,7 @@ export function encodeStorySlug(
     cl: category.label,
     ac: category.color
   };
-  const encoded = Buffer.from(JSON.stringify(payload), "utf-8").toString(
-    "base64url"
-  );
+  const encoded = toBase64Url(JSON.stringify(payload));
   // A "." separator is safe: the title slug only ever contains lowercase
   // letters, digits and single dashes, and base64url never contains ".".
   return `${slugifyTitle(article.title)}.${encoded}`;
@@ -53,9 +70,7 @@ export function decodeStorySlug(slug: string): StoryPayload | null {
   const dotIndex = slug.lastIndexOf(".");
   if (dotIndex === -1) return null;
   try {
-    const json = Buffer.from(slug.slice(dotIndex + 1), "base64url").toString(
-      "utf-8"
-    );
+    const json = fromBase64Url(slug.slice(dotIndex + 1));
     return JSON.parse(json) as StoryPayload;
   } catch {
     return null;
