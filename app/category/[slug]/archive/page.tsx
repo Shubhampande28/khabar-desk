@@ -43,24 +43,24 @@ export default function ArchivePage({
     <section className="py-10">
       <Link
         href={`/category/${category.slug}`}
-        className="text-xs font-medium uppercase tracking-wide text-ink/60 hover:text-ink"
+        className="text-xs font-medium uppercase tracking-wide text-ink/75 hover:text-ink"
       >
         ← Back to {category.label}
       </Link>
 
       <div className="mb-6 mt-3 flex items-center gap-2.5">
-        <span className={`h-2.5 w-2.5 ${accentDot[category.color]}`} />
+        <span className={`h-2.5 w-2.5 rounded-full ${accentDot[category.color]}`} />
         <h1 className="text-balance font-serif text-2xl text-ink sm:text-3xl">
           {category.label} archive
         </h1>
       </div>
 
-      <p className="mb-6 text-xs text-ink/50">
+      <p className="mb-6 text-xs text-ink/70">
         {total} stories saved since ingestion started.
       </p>
 
       {articles.length === 0 ? (
-        <p className="text-sm text-ink/50">
+        <p className="text-sm text-ink/70">
           Nothing archived for {category.label} yet — check back after the
           site's been running a while.
         </p>
@@ -89,7 +89,7 @@ export default function ArchivePage({
           ) : (
             <span />
           )}
-          <span className="text-ink/50">
+          <span className="text-ink/70">
             Page {page} of {totalPages}
           </span>
           {page < totalPages ? (

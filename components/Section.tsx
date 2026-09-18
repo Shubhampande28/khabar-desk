@@ -32,19 +32,19 @@ export default function Section({
     <section className="border-t border-ink/15 py-10">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <span className={`h-2.5 w-2.5 ${accentClasses[color]}`} />
+          <span className={`h-2.5 w-2.5 rounded-full ${accentClasses[color]}`} />
           <h2 className="font-serif text-xl text-ink sm:text-2xl">{label}</h2>
         </div>
         <Link
           href={`/category/${slug}`}
-          className="text-sm text-ink/60 underline-offset-4 hover:text-ink hover:underline"
+          className="text-sm text-ink/75 underline-offset-4 hover:text-ink hover:underline"
         >
           View all
         </Link>
       </div>
 
       {shown.length === 0 ? (
-        <p className="text-sm text-ink/50">
+        <p className="text-sm text-ink/70">
           No headlines came through for {label} just now — the feed may be
           down. Try again shortly, or check lib/sources.ts.
         </p>

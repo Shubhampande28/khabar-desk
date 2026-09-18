@@ -20,7 +20,7 @@ export default function HomePage() {
     <>
       <section className="py-10">
         <div className="mb-6 flex items-center gap-2.5">
-          <span className="h-2.5 w-2.5 bg-wire" />
+          <span className="h-2.5 w-2.5 rounded-full bg-wire" />
           <h1 className="font-serif text-2xl text-ink sm:text-3xl">
             Top Stories
           </h1>
@@ -47,7 +47,7 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          <p className="text-sm text-ink/50">
+          <p className="text-sm text-ink/70">
             Top stories aren't loading right now. Run{" "}
             <code>npm run ingest</code> to fetch the feeds, or check
             lib/sources.ts.

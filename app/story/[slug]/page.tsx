@@ -33,7 +33,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
     <article className="mx-auto max-w-2xl py-10">
       <Link
         href={`/category/${story.cs}`}
-        className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-ink/60 hover:text-ink"
+        className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-ink/75 hover:text-ink"
       >
         <span
           className={`h-1.5 w-1.5 rounded-full ${
@@ -47,7 +47,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         {story.t}
       </h1>
 
-      <div className="mt-2 flex items-center gap-2 text-sm text-ink/60">
+      <div className="mt-2 flex items-center gap-2 text-sm text-ink/75">
         <span className="font-medium">{story.s}</span>
         {story.d && (
           <>
@@ -75,7 +75,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         </blockquote>
       )}
 
-      <p className="mt-6 text-sm leading-relaxed text-ink/60">
+      <p className="mt-6 text-sm leading-relaxed text-ink/75">
         {SITE_NAME} curates headlines like this across Top Stories,
         Entertainment, Bollywood, Hollywood, Crime and Politics from public
         RSS feeds. This page links out to {story.s}'s own reporting rather

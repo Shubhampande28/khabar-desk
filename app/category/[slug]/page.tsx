@@ -41,14 +41,14 @@ export default function CategoryPage({
   return (
     <section className="py-10">
       <div className="mb-6 flex items-center gap-2.5">
-        <span className={`h-2.5 w-2.5 ${accentDot[category.color]}`} />
+        <span className={`h-2.5 w-2.5 rounded-full ${accentDot[category.color]}`} />
         <h1 className="text-balance font-serif text-2xl text-ink sm:text-3xl">
           {category.label}
         </h1>
       </div>
 
       {articles.length === 0 ? (
-        <p className="text-sm text-ink/50">
+        <p className="text-sm text-ink/70">
           Nothing's been ingested for {category.label} yet. Run{" "}
           <code>npm run ingest</code> to fetch the feeds, or check
           lib/sources.ts.

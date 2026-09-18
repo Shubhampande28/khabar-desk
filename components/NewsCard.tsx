@@ -18,13 +18,13 @@ const accentClasses: Record<AccentColor, string> = {
 
 function Meta({ article, accent }: { article: Article; accent: AccentColor }) {
   return (
-    <div className="mt-1.5 flex items-center gap-2 text-xs text-ink/60">
+    <div className="mt-1.5 flex items-center gap-2 text-xs">
       <span className={`h-1.5 w-1.5 rounded-full ${accentClasses[accent]}`} />
-      <span className="font-medium">{article.source}</span>
+      <span className="font-medium text-ink/90">{article.source}</span>
       {article.isoDate && (
         <>
-          <span aria-hidden>·</span>
-          <span>{timeAgo(article.isoDate)}</span>
+          <span aria-hidden className="text-ink/60">·</span>
+          <span className="text-ink/70">{timeAgo(article.isoDate)}</span>
         </>
       )}
     </div>

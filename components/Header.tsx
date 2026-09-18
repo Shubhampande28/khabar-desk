@@ -3,6 +3,7 @@ import { Article } from "@/lib/types";
 import { categories } from "@/lib/sources";
 import { SITE_TAGLINE } from "@/lib/site";
 import ThemeToggle from "./ThemeToggle";
+import Ticker from "./Ticker";
 
 export default function Header({ ticker }: { ticker: Article[] }) {
   return (
@@ -17,7 +18,7 @@ export default function Header({ ticker }: { ticker: Article[] }) {
           </span>
         </Link>
         <div className="flex items-center gap-4">
-          <span className="hidden font-sans text-xs text-ink/50 sm:block">
+          <span className="hidden font-sans text-xs text-ink/70 sm:block">
             {new Date().toLocaleDateString("en-IN", {
               weekday: "long",
               day: "numeric",
@@ -44,15 +45,7 @@ export default function Header({ ticker }: { ticker: Article[] }) {
         ))}
       </nav>
 
-      {ticker.length > 0 && (
-        <div className="overflow-hidden border-t border-ink/15 bg-ink py-2">
-          <div className="animate-marquee flex w-max gap-10 whitespace-nowrap text-sm text-paper">
-            {[...ticker, ...ticker].map((item, i) => (
-              <span key={i}>{item.title}</span>
-            ))}
-          </div>
-        </div>
-      )}
+      <Ticker ticker={ticker} />
     </header>
   );
 }

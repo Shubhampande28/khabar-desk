@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div>
             <span className="font-serif text-xl text-ink">{SITE_NAME}</span>
-            <p className="mt-1 text-xs text-ink/50">{SITE_TAGLINE}</p>
+            <p className="mt-1 text-xs text-ink/70">{SITE_TAGLINE}</p>
           </div>
 
           <nav className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
@@ -17,7 +17,7 @@ export default function Footer() {
               <Link
                 key={c.slug}
                 href={`/category/${c.slug}`}
-                className="text-ink/60 hover:text-ink hover:underline"
+                className="text-ink/75 hover:text-ink hover:underline"
               >
                 {c.label}
               </Link>
@@ -25,7 +25,7 @@ export default function Footer() {
           </nav>
         </div>
 
-        <p className="mt-8 text-xs leading-relaxed text-ink/50">
+        <p className="mt-8 text-xs leading-relaxed text-ink/70">
           Headlines and images on this site are pulled from public RSS feeds
           of the linked publishers and belong to them. {SITE_NAME} only links
           out to the original articles — click any headline to read the full
@@ -33,21 +33,21 @@ export default function Footer() {
         </p>
 
         <nav className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-          <Link href="/about" className="text-ink/50 hover:text-ink hover:underline">
+          <Link href="/about" className="text-ink/70 hover:text-ink hover:underline">
             About
           </Link>
-          <Link href="/contact" className="text-ink/50 hover:text-ink hover:underline">
+          <Link href="/contact" className="text-ink/70 hover:text-ink hover:underline">
             Contact
           </Link>
-          <Link href="/privacy" className="text-ink/50 hover:text-ink hover:underline">
+          <Link href="/privacy" className="text-ink/70 hover:text-ink hover:underline">
             Privacy Policy
           </Link>
-          <Link href="/terms" className="text-ink/50 hover:text-ink hover:underline">
+          <Link href="/terms" className="text-ink/70 hover:text-ink hover:underline">
             Terms of Service
           </Link>
         </nav>
 
-        <p className="mt-4 text-xs text-ink/50">© {new Date().getFullYear()} {SITE_NAME}.</p>
+        <p className="mt-4 text-xs text-ink/70">© {new Date().getFullYear()} {SITE_NAME}.</p>
       </div>
     </footer>
   );
