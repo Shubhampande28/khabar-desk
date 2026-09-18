@@ -36,13 +36,14 @@ export default function HomePage() {
               />
             </div>
             <div>
-              {restTop.map((article) => (
-                <ListItem
-                  key={article.link}
-                  article={article}
-                  accent="wire"
-                  category={{ slug: topCategory.slug, label: topCategory.label }}
-                />
+              {restTop.map((article, i) => (
+                <div key={article.link} className={i >= 3 ? "hidden lg:block" : ""}>
+                  <ListItem
+                    article={article}
+                    accent="wire"
+                    category={{ slug: topCategory.slug, label: topCategory.label }}
+                  />
+                </div>
               ))}
             </div>
           </div>

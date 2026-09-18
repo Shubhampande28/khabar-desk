@@ -4,17 +4,27 @@ import { categories } from "@/lib/sources";
 import { SITE_TAGLINE } from "@/lib/site";
 import ThemeToggle from "./ThemeToggle";
 import Ticker from "./Ticker";
+import LogoMark from "./Logo";
 
-export default function Header({ ticker }: { ticker: Article[] }) {
+export default function Header({
+  ticker,
+  tickerCategory
+}: {
+  ticker: Article[];
+  tickerCategory: { slug: string; label: string };
+}) {
   return (
     <header className="border-b border-ink/15 bg-paper">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6">
-        <Link href="/" className="group">
-          <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
-            Khabar Adda
-          </span>
-          <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
-            {SITE_TAGLINE}
+        <Link href="/" className="group flex items-center gap-3">
+          <LogoMark className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
+          <span>
+            <span className="block font-serif text-3xl tracking-tight text-ink sm:text-4xl">
+              Khabar Adda
+            </span>
+            <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
+              {SITE_TAGLINE}
+            </span>
           </span>
         </Link>
         <div className="flex items-center gap-4">
@@ -45,7 +55,7 @@ export default function Header({ ticker }: { ticker: Article[] }) {
         ))}
       </nav>
 
-      <Ticker ticker={ticker} />
+      <Ticker ticker={ticker} category={tickerCategory} />
     </header>
   );
 }

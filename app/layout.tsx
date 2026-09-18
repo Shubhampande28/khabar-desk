@@ -73,7 +73,10 @@ export default function RootLayout({
         <ins class="adsbygoogle"> unit using your ad slot ID.
       */}
       <body className={`${headline.variable} ${body.variable} font-sans`}>
-        <Header ticker={articles} />
+        <Header
+          ticker={articles}
+          tickerCategory={{ slug: topCategory.slug, label: topCategory.label }}
+        />
         <main className="mx-auto max-w-6xl px-4 sm:px-6">{children}</main>
         <Footer />
         <Analytics />

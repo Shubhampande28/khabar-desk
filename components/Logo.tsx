@@ -1,0 +1,19 @@
+// Speech-bubble mark: three "headline lines" inside a bubble, a small
+// accent dot standing in for "breaking/new". Colors are the site's own
+// existing palette (wire red, paper, ink, mustard) — always fixed
+// regardless of light/dark mode, same as any other brand mark.
+export default function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+      <path
+        d="M 30 20 H 170 A 20 20 0 0 1 190 40 V 130 A 20 20 0 0 1 170 150 H 78 L 46 182 A 4 4 0 0 1 40 179 L 42 150 H 30 A 20 20 0 0 1 10 130 V 40 A 20 20 0 0 1 30 20 Z"
+        fill="#C0392B"
+      />
+      <rect x="38" y="58" width="124" height="14" rx="7" fill="#F1EEE6" />
+      <rect x="38" y="86" width="90" height="14" rx="7" fill="#F1EEE6" opacity="0.85" />
+      <rect x="38" y="114" width="64" height="14" rx="7" fill="#F1EEE6" opacity="0.6" />
+      <circle cx="172" cy="28" r="13" fill="#14171C" />
+      <circle cx="172" cy="28" r="6" fill="#C98A2C" />
+    </svg>
+  );
+}

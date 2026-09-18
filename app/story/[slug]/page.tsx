@@ -63,7 +63,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
             src={story.i}
             alt={story.t}
             fill
-            unoptimized
+            sizes="(min-width: 672px) 672px, 100vw"
             className="object-cover"
           />
         </div>
