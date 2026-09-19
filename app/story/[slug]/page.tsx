@@ -4,6 +4,7 @@ import Link from "next/link";
 import { decodeStorySlug } from "@/lib/story";
 import { timeAgo } from "@/lib/time";
 import { SITE_NAME } from "@/lib/site";
+import { shouldSkipOptimization } from "@/lib/image";
 
 const accentClasses: Record<string, string> = {
   orange: "bg-orange",
@@ -63,6 +64,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
             src={story.i}
             alt={story.t}
             fill
+            unoptimized={shouldSkipOptimization(story.i)}
             sizes="(min-width: 672px) 672px, 100vw"
             className="object-cover"
           />
