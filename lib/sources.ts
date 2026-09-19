@@ -11,7 +11,7 @@ export type Category = {
   slug: string;
   label: string;
   // Tailwind color used for this category's tag/accent
-  color: "orange" | "teal" | "amber" | "slate" | "pink" | "blue";
+  color: "accent" | "teal" | "amber" | "slate" | "pink" | "blue";
   feeds: string[];
 };
 
@@ -19,7 +19,7 @@ export const categories: Category[] = [
   {
     slug: "top",
     label: "Top Stories",
-    color: "orange",
+    color: "accent",
     feeds: [
       "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
       "https://feeds.feedburner.com/ndtvnews-top-stories",

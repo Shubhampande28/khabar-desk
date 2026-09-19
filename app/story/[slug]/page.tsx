@@ -5,15 +5,7 @@ import { decodeStorySlug } from "@/lib/story";
 import { timeAgo } from "@/lib/time";
 import { SITE_NAME } from "@/lib/site";
 import { shouldSkipOptimization } from "@/lib/image";
-
-const accentClasses: Record<string, string> = {
-  orange: "bg-orange",
-  teal: "bg-teal",
-  amber: "bg-amber",
-  slate: "bg-slate",
-  pink: "bg-pink",
-  blue: "bg-blue"
-};
+import { AccentColor, accentBg } from "@/lib/colors";
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const story = decodeStorySlug(params.slug);
@@ -34,13 +26,9 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
     <article className="mx-auto max-w-2xl py-10">
       <Link
         href={`/category/${story.cs}`}
-        className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-ink/75 hover:text-ink"
+        className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-inkSoft hover:text-accent"
       >
-        <span
-          className={`h-1.5 w-1.5 rounded-full ${
-            accentClasses[story.ac] || "bg-ink"
-          }`}
-        />
+        <span className={`h-1.5 w-1.5 rounded-full ${accentBg(story.ac as AccentColor)}`} />
         {story.cl}
       </Link>
 
@@ -48,8 +36,8 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         {story.t}
       </h1>
 
-      <div className="mt-2 flex items-center gap-2 text-sm text-ink/75">
-        <span className="font-medium">{story.s}</span>
+      <div className="mt-2 flex items-center gap-2 text-sm text-inkSoft">
+        <span className="font-semibold text-ink">{story.s}</span>
         {story.d && (
           <>
             <span aria-hidden>·</span>
@@ -59,7 +47,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
       </div>
 
       {story.i && (
-        <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden bg-paperdim">
+        <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-paperdim">
           <Image
             src={story.i}
             alt={story.t}
@@ -72,12 +60,12 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
       )}
 
       {story.c && (
-        <blockquote className="mt-6 border-l-2 border-ink/20 pl-4 text-base leading-relaxed text-ink/80">
+        <blockquote className="mt-6 border-l-2 border-line pl-4 text-base leading-relaxed text-inkSoft">
           {story.c}…
         </blockquote>
       )}
 
-      <p className="mt-6 text-sm leading-relaxed text-ink/75">
+      <p className="mt-6 text-sm leading-relaxed text-inkSoft">
         {SITE_NAME} curates headlines like this across Top Stories,
         Entertainment, Bollywood, Hollywood, Crime and Politics from public
         RSS feeds. This page links out to {story.s}'s own reporting rather
@@ -89,7 +77,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         href={story.l}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-8 inline-block rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition hover:bg-ink/90"
+        className="mt-8 inline-block rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110"
       >
         Read full story on {story.s} →
       </a>

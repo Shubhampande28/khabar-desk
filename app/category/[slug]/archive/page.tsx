@@ -3,15 +3,7 @@ import Link from "next/link";
 import { getCategory } from "@/lib/sources";
 import { getArchivePage } from "@/lib/db";
 import { RowCard } from "@/components/NewsCard";
-
-const accentDot: Record<string, string> = {
-  orange: "bg-orange",
-  teal: "bg-teal",
-  amber: "bg-amber",
-  slate: "bg-slate",
-  pink: "bg-pink",
-  blue: "bg-blue"
-};
+import { accentBg, accentText } from "@/lib/colors";
 
 export const dynamic = "force-dynamic";
 
@@ -43,29 +35,29 @@ export default function ArchivePage({
     <section className="py-10">
       <Link
         href={`/category/${category.slug}`}
-        className="text-xs font-medium uppercase tracking-wide text-ink/75 hover:text-ink"
+        className="text-xs font-medium uppercase tracking-wide text-inkSoft hover:text-accent"
       >
         ← Back to {category.label}
       </Link>
 
-      <div className="mb-6 mt-3 flex items-center gap-2.5">
-        <span className={`h-2.5 w-2.5 rounded-full ${accentDot[category.color]}`} />
-        <h1 className="text-balance font-serif text-2xl text-ink sm:text-3xl">
+      <div className="mb-1 mt-3 flex items-center gap-2">
+        <span className={`h-1.5 w-1.5 rounded-full ${accentBg(category.color)}`} />
+        <span className={`text-xs font-bold uppercase tracking-wide ${accentText(category.color)}`}>
           {category.label} archive
-        </h1>
+        </span>
       </div>
 
-      <p className="mb-6 text-xs text-ink/70">
+      <p className="mb-6 text-xs text-muted">
         {total} stories saved since ingestion started.
       </p>
 
       {articles.length === 0 ? (
-        <p className="text-sm text-ink/70">
+        <p className="text-sm text-inkSoft">
           Nothing archived for {category.label} yet — check back after the
           site's been running a while.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {articles.map((article) => (
             <RowCard
               key={article.link}
@@ -78,24 +70,24 @@ export default function ArchivePage({
       )}
 
       {totalPages > 1 && (
-        <nav className="mt-10 flex items-center justify-between border-t border-ink/10 pt-6 text-sm">
+        <nav className="mt-10 flex items-center justify-between border-t border-line pt-6 text-sm">
           {page > 1 ? (
             <Link
               href={`/category/${category.slug}/archive?page=${page - 1}`}
-              className="font-medium text-ink hover:underline"
+              className="font-medium text-ink hover:text-accent"
             >
               ← Newer
             </Link>
           ) : (
             <span />
           )}
-          <span className="text-ink/70">
+          <span className="text-muted">
             Page {page} of {totalPages}
           </span>
           {page < totalPages ? (
             <Link
               href={`/category/${category.slug}/archive?page=${page + 1}`}
-              className="font-medium text-ink hover:underline"
+              className="font-medium text-ink hover:text-accent"
             >
               Older →
             </Link>

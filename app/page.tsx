@@ -19,36 +19,38 @@ export default function HomePage() {
   return (
     <>
       <section className="py-10">
-        <div className="mb-6 flex items-center gap-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-orange" />
-          <h1 className="font-serif text-2xl text-ink sm:text-3xl">
+        <div className="mb-6 flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="text-xs font-bold uppercase tracking-wide text-accent">
             Top Stories
-          </h1>
+          </span>
         </div>
 
         {heroArticle ? (
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-            <div className="lg:col-span-2">
-              <FeaturedCard
-                article={heroArticle}
-                accent="orange"
-                category={{ slug: topCategory.slug, label: topCategory.label }}
-              />
-            </div>
-            <div>
+          <div className="grid grid-cols-1 gap-8 min-[900px]:grid-cols-[2fr_1fr] min-[900px]:gap-10">
+            <FeaturedCard
+              article={heroArticle}
+              accent="accent"
+              category={{ slug: topCategory.slug, label: topCategory.label }}
+            />
+            <div className="rounded-[20px] border border-line bg-card p-5">
+              <p className="mb-1 text-xs font-bold uppercase tracking-wide text-muted">
+                More Headlines
+              </p>
               {restTop.map((article, i) => (
-                <div key={article.link} className={i >= 3 ? "hidden lg:block" : ""}>
+                <div key={article.link} className={i >= 3 ? "hidden min-[900px]:block" : ""}>
                   <ListItem
                     article={article}
-                    accent="orange"
+                    accent="accent"
                     category={{ slug: topCategory.slug, label: topCategory.label }}
+                    index={i + 1}
                   />
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <p className="text-sm text-ink/70">
+          <p className="text-sm text-inkSoft">
             Top stories aren't loading right now. Run{" "}
             <code>npm run ingest</code> to fetch the feeds, or check
             lib/sources.ts.

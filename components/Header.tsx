@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Article } from "@/lib/types";
-import { categories } from "@/lib/sources";
 import { SITE_TAGLINE } from "@/lib/site";
 import ThemeToggle from "./ThemeToggle";
 import Ticker from "./Ticker";
 import LogoMark from "./Logo";
+import Nav from "./Nav";
 
 export default function Header({
   ticker,
@@ -14,22 +14,24 @@ export default function Header({
   tickerCategory: { slug: string; label: string };
 }) {
   return (
-    <header className="border-b border-ink/15 bg-paper">
+    <header className="border-b border-line bg-paper">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6">
         <Link href="/" className="group flex items-center gap-3">
           <LogoMark className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
           <span>
-            <span className="block font-sans text-2xl font-extrabold tracking-tight sm:text-3xl">
+            <span className="logo-wordmark block font-serif text-2xl font-bold tracking-tight sm:text-3xl">
               <span className="text-ink">Khabar</span>
-              <span className="text-orange">Adda</span>
+              <span className="text-accent transition-[filter] duration-200 group-hover:brightness-125">
+                Adda
+              </span>
             </span>
-            <span className="hidden font-sans text-[11px] uppercase tracking-wide text-ink/40 sm:block">
+            <span className="logo-tagline hidden font-sans text-[11px] font-medium uppercase tracking-wide text-muted sm:block">
               {SITE_TAGLINE}
             </span>
           </span>
         </Link>
         <div className="flex items-center gap-4">
-          <span className="hidden font-sans text-xs text-ink/70 sm:block">
+          <span className="hidden font-sans text-xs text-inkSoft sm:block">
             {new Date().toLocaleDateString("en-IN", {
               weekday: "long",
               day: "numeric",
@@ -41,20 +43,13 @@ export default function Header({
         </div>
       </div>
 
-      <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto border-t border-ink/10 px-4 py-2.5 text-sm sm:px-6">
-        <Link href="/" className="whitespace-nowrap text-ink hover:underline">
-          Home
-        </Link>
-        {categories.map((c) => (
-          <Link
-            key={c.slug}
-            href={`/category/${c.slug}`}
-            className="whitespace-nowrap text-ink/70 hover:text-ink hover:underline"
-          >
-            {c.label}
-          </Link>
-        ))}
-      </nav>
+      <Nav />
+
+      <div className="border-t border-line bg-trust px-4 py-2 text-center text-[12.5px] text-trustText sm:px-6">
+        <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" />
+        Aggregated from Times of India, NDTV, Hindustan Times, India Today and
+        more · Every source linked and credited · Updated every 15 minutes
+      </div>
 
       <Ticker ticker={ticker} category={tickerCategory} />
     </header>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Newsreader, Archivo } from "next/font/google";
+import { Newsreader, Public_Sans } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -12,12 +12,14 @@ import { SITE_URL, SITE_NAME, SITE_TAGLINE, GA_MEASUREMENT_ID } from "@/lib/site
 const headline = Newsreader({
   subsets: ["latin"],
   variable: "--font-headline",
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"]
 });
 
-const body = Archivo({
+const body = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-body"
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"]
 });
 
 const description =

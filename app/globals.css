@@ -3,15 +3,27 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: 15 23 42;
-  --color-paper: 255 255 255;
-  --color-paperdim: 238 242 248;
+  --color-ink: 23 23 31;
+  --color-ink-soft: 85 85 95;
+  --color-muted: 154 154 163;
+  --color-paper: 244 242 238;
+  --color-card: 255 255 255;
+  --color-paperdim: 237 236 231;
+  --color-line: 237 236 231;
+  --color-trust-bg: 253 245 238;
+  --color-trust-text: 138 90 55;
 }
 
 :root.dark {
-  --color-ink: 226 232 240;
-  --color-paper: 10 15 30;
-  --color-paperdim: 20 27 46;
+  --color-ink: 237 237 242;
+  --color-ink-soft: 176 176 186;
+  --color-muted: 122 122 132;
+  --color-paper: 15 16 20;
+  --color-card: 26 27 33;
+  --color-paperdim: 34 35 42;
+  --color-line: 40 41 48;
+  --color-trust-bg: 43 32 24;
+  --color-trust-text: 232 179 133;
 }
 
 body {
@@ -33,13 +45,84 @@ body {
   animation: marquee 40s linear infinite;
 }
 
+/* Logo: load-in + continuous dot bounce */
+@keyframes logo-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-text-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes logo-dot-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.logo-icon {
+  animation: logo-icon-in 0.55s ease-out both;
+}
+
+.logo-wordmark {
+  animation: logo-text-in 0.4s ease-out both;
+  animation-delay: 0.12s;
+}
+
+.logo-tagline {
+  animation: logo-text-in 0.4s ease-out both;
+  animation-delay: 0.22s;
+}
+
+.logo-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: logo-dot-bounce 1.6s ease-in-out infinite;
+}
+
+.logo-dot-1 {
+  animation-delay: 0s;
+}
+
+.logo-dot-2 {
+  animation-delay: 0.18s;
+}
+
+.logo-dot-3 {
+  animation-delay: 0.36s;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
+  .animate-marquee,
+  .logo-icon,
+  .logo-wordmark,
+  .logo-tagline,
+  .logo-dot {
+    animation: none !important;
   }
 }
 
 :focus-visible {
-  outline: 2px solid #f2622a;
+  outline: 2px solid #ea580c;
   outline-offset: 2px;
 }
