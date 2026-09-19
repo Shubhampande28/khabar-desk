@@ -4,7 +4,8 @@ const config: Config = {
   darkMode: "class",
   content: [
     "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}"
+    "./components/**/*.{ts,tsx}",
+    "./lib/**/*.{ts,tsx}"
   ],
   theme: {
     extend: {
@@ -19,11 +20,14 @@ const config: Config = {
         trust: "rgb(var(--color-trust-bg) / <alpha-value>)",
         trustText: "rgb(var(--color-trust-text) / <alpha-value>)",
         accent: "#ea580c",
-        amber: "#F0A028",
-        pink: "#E0457B",
-        teal: "#1B9AAA",
-        slate: "#45577A",
-        blue: "#3B6EA5"
+        crime: "#b91c1c",
+        entertainment: "#9333ea",
+        bollywood: "#db2777",
+        hollywood: "#2563eb",
+        business: "#0f766e",
+        markets: "#15803d",
+        startups: "#4338ca",
+        politics: "#334155"
       },
       fontFamily: {
         serif: ["var(--font-headline)", "Georgia", "serif"],

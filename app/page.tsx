@@ -1,4 +1,4 @@
-import { categories, getCategory } from "@/lib/sources";
+import { categories, getCategory, CATEGORY_CHILDREN } from "@/lib/sources";
 import { getRecentArticles } from "@/lib/db";
 import { FeaturedCard, ListItem } from "@/components/NewsCard";
 import Section from "@/components/Section";
@@ -18,8 +18,8 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="py-10">
-        <div className="mb-6 flex items-center gap-2">
+      <section className="py-16">
+        <div className="mb-7 flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           <span className="text-xs font-bold uppercase tracking-wide text-accent">
             Top Stories
@@ -66,7 +66,11 @@ export default function HomePage() {
             slug={category.slug}
             label={category.label}
             color={category.color}
-            articles={getRecentArticles(category.slug, 4)}
+            articles={getRecentArticles(
+              category.slug,
+              4,
+              CATEGORY_CHILDREN[category.slug] ?? []
+            )}
           />
           {i === 1 && <AdSlot />}
         </div>

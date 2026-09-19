@@ -1,26 +1,41 @@
-// Single source of truth for category accent colors. Previously this exact
-// type + Record pair was independently redeclared in five different files
-// (Section, NewsCard, the category page, the archive page, the story page)
-// — centralizing it here now that the redesign needs both a background and
-// a text variant of each color (chips, index numbers, hover states).
-export type AccentColor = "accent" | "teal" | "amber" | "slate" | "pink" | "blue";
+// Single source of truth for category accent colors — previously this
+// exact type + Record pair was independently redeclared in five different
+// files. Each category now has its own literal color (matching its badge
+// color from the design spec), rather than an arbitrary shared palette of
+// generic color names.
+export type AccentColor =
+  | "accent"
+  | "entertainment"
+  | "bollywood"
+  | "hollywood"
+  | "crime"
+  | "politics"
+  | "business"
+  | "markets"
+  | "startups";
 
 const BG: Record<AccentColor, string> = {
   accent: "bg-accent",
-  teal: "bg-teal",
-  amber: "bg-amber",
-  slate: "bg-slate",
-  pink: "bg-pink",
-  blue: "bg-blue"
+  entertainment: "bg-entertainment",
+  bollywood: "bg-bollywood",
+  hollywood: "bg-hollywood",
+  crime: "bg-crime",
+  politics: "bg-politics",
+  business: "bg-business",
+  markets: "bg-markets",
+  startups: "bg-startups"
 };
 
 const TEXT: Record<AccentColor, string> = {
   accent: "text-accent",
-  teal: "text-teal",
-  amber: "text-amber",
-  slate: "text-slate",
-  pink: "text-pink",
-  blue: "text-blue"
+  entertainment: "text-entertainment",
+  bollywood: "text-bollywood",
+  hollywood: "text-hollywood",
+  crime: "text-crime",
+  politics: "text-politics",
+  business: "text-business",
+  markets: "text-markets",
+  startups: "text-startups"
 };
 
 export function accentBg(color: AccentColor): string {

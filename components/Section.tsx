@@ -19,8 +19,8 @@ export default function Section({
   const shown = articles.slice(0, count);
 
   return (
-    <section className="border-t border-line py-10">
-      <div className="mb-6 flex items-end justify-between">
+    <section className="border-t border-line py-16">
+      <div className="mb-7 flex items-end justify-between">
         <div className="flex items-center gap-2">
           <span className={`h-1.5 w-1.5 rounded-full ${accentBg(color)}`} />
           <span className={`text-xs font-bold uppercase tracking-wide ${accentText(color)}`}>

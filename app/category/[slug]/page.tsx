@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getCategory } from "@/lib/sources";
+import { getCategory, CATEGORY_CHILDREN } from "@/lib/sources";
 import { getRecentArticles } from "@/lib/db";
 import { RowCard } from "@/components/NewsCard";
 import AdSlot from "@/components/AdSlot";
@@ -28,7 +28,11 @@ export default function CategoryPage({
   const category = getCategory(params.slug);
   if (!category) notFound();
 
-  const articles = getRecentArticles(category.slug, 30);
+  const articles = getRecentArticles(
+    category.slug,
+    30,
+    CATEGORY_CHILDREN[category.slug] ?? []
+  );
 
   return (
     <section className="py-10">

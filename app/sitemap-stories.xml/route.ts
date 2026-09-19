@@ -1,4 +1,4 @@
-import { categories } from "@/lib/sources";
+import { categories, CATEGORY_CHILDREN } from "@/lib/sources";
 import { getArticlesForSitemap } from "@/lib/db";
 import { encodeStorySlug } from "@/lib/story";
 import { SITE_URL } from "@/lib/site";
@@ -18,7 +18,12 @@ export async function GET() {
   const urls: string[] = [];
 
   for (const category of categories) {
-    const articles = getArticlesForSitemap(category.slug);
+    const articles = getArticlesForSitemap(
+      category.slug,
+      7,
+      300,
+      CATEGORY_CHILDREN[category.slug] ?? []
+    );
     for (const article of articles) {
       const slug = encodeStorySlug(article, {
         slug: category.slug,

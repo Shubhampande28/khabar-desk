@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getCategory } from "@/lib/sources";
+import { getCategory, CATEGORY_CHILDREN } from "@/lib/sources";
 import { getArchivePage } from "@/lib/db";
 import { RowCard } from "@/components/NewsCard";
 import { accentBg, accentText } from "@/lib/colors";
@@ -27,7 +27,12 @@ export default function ArchivePage({
   if (!category) notFound();
 
   const page = Math.max(1, parseInt(searchParams.page || "1", 10) || 1);
-  const { articles, total, totalPages } = getArchivePage(category.slug, page);
+  const { articles, total, totalPages } = getArchivePage(
+    category.slug,
+    page,
+    24,
+    CATEGORY_CHILDREN[category.slug] ?? []
+  );
 
   if (page > 1 && articles.length === 0) notFound();
 

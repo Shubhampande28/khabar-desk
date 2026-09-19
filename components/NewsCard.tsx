@@ -32,7 +32,7 @@ function CategoryChip({
 }) {
   return (
     <span
-      className={`absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide shadow-sm ${accentText(
+      className={`absolute left-3.5 top-3.5 rounded-lg px-3 py-[6px] text-[10px] font-bold uppercase tracking-[0.4px] text-white shadow-md ${accentBg(
         accent
       )}`}
     >
