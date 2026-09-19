@@ -99,6 +99,29 @@ export function getRecentArticles(categorySlug: string, limit: number): Article[
   return capBySource(articles, limit).slice(0, limit);
 }
 
+// For the dynamic story sitemap: recent articles, per category, so each
+// comes back with the category info needed to build its story URL. Capped
+// to a window (not the whole archive) since a sitemap should represent
+// what's actually worth crawling regularly, not permanent history —
+// older stories stay reachable via the archive pages instead.
+export function getArticlesForSitemap(
+  categorySlug: string,
+  sinceDays = 7,
+  limit = 300
+): Article[] {
+  const sinceIso = new Date(Date.now() - sinceDays * 24 * 60 * 60 * 1000).toISOString();
+  const rows = db
+    .prepare(
+      `SELECT link, title, source, iso_date, image, content_snippet
+       FROM articles
+       WHERE category_slug = ? AND iso_date >= ?
+       ORDER BY iso_date DESC
+       LIMIT ?`
+    )
+    .all(categorySlug, sinceIso, limit) as ArticleRow[];
+  return rows.map(rowToArticle);
+}
+
 export function getArchivePage(
   categorySlug: string,
   page: number,
