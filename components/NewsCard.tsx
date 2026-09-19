@@ -23,24 +23,6 @@ function Meta({ article, accent }: { article: Article; accent: AccentColor }) {
   );
 }
 
-function CategoryChip({
-  label,
-  accent
-}: {
-  label: string;
-  accent: AccentColor;
-}) {
-  return (
-    <span
-      className={`absolute left-3.5 top-3.5 rounded-lg px-3 py-[6px] text-[10px] font-bold uppercase tracking-[0.4px] text-white shadow-md ${accentBg(
-        accent
-      )}`}
-    >
-      {label}
-    </span>
-  );
-}
-
 function storyHref(
   article: Article,
   accent: AccentColor,
@@ -75,7 +57,6 @@ export function FeaturedCard({
               className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-            <CategoryChip label={category.label} accent={accent} />
             <h2 className="text-balance absolute inset-x-0 bottom-0 p-5 font-serif text-2xl leading-snug text-white sm:p-6 sm:text-3xl">
               {article.title}
             </h2>
@@ -158,7 +139,6 @@ export function RowCard({
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
               className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
-            <CategoryChip label={category.label} accent={accent} />
           </>
         ) : (
           <div className="flex h-full w-full items-center justify-center text-ink/30">
