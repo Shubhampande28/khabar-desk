@@ -5,6 +5,7 @@ import { getRecentArticles } from "@/lib/db";
 import { RowCard } from "@/components/NewsCard";
 import AdSlot from "@/components/AdSlot";
 import { accentBg, accentText } from "@/lib/colors";
+import { SITE_NAME } from "@/lib/site";
 
 // Data comes from a local SQLite database that a background ingestion job
 // keeps updated (see scripts/ingest.ts) — always render fresh from it
@@ -15,7 +16,9 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   const category = getCategory(params.slug);
   if (!category) return { title: "Not found" };
   return {
-    title: category.label,
+    // Bypasses the root layout's "%s — Khabar Adda" template — category
+    // pages use "<Section> News Today | Khabar Adda" per the agreed format.
+    title: { absolute: `${category.label} News Today | ${SITE_NAME}` },
     description: `Latest ${category.label} news, updated throughout the day.`
   };
 }

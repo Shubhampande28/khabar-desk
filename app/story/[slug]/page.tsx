@@ -6,13 +6,16 @@ import { timeAgo } from "@/lib/time";
 import { SITE_NAME } from "@/lib/site";
 import { shouldSkipOptimization } from "@/lib/image";
 import { AccentColor, accentBg } from "@/lib/colors";
+import OutboundLink from "@/components/OutboundLink";
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const story = decodeStorySlug(params.slug);
   if (!story) return { title: "Story not found" };
 
   return {
-    title: story.t,
+    // Bypasses the root layout's "%s — Khabar Adda" template: article pages
+    // use a plain "|" instead, per the agreed title format.
+    title: { absolute: `${story.t} | ${SITE_NAME}` },
     description: story.c || `${story.t} — via ${story.s}, curated by ${SITE_NAME}.`,
     openGraph: story.i ? { images: [{ url: story.i }] } : undefined
   };
@@ -61,7 +64,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
 
       {story.c && (
         <blockquote className="mt-6 border-l-2 border-line pl-4 text-base leading-relaxed text-inkSoft">
-          {story.c}…
+          {story.c}
         </blockquote>
       )}
 
@@ -73,14 +76,15 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
         feed.
       </p>
 
-      <a
+      <OutboundLink
         href={story.l}
-        target="_blank"
-        rel="noopener noreferrer"
+        sourceName={story.s}
+        category={story.cs}
+        articleSlug={params.slug}
         className="mt-8 inline-block rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110"
       >
         Read full story on {story.s} →
-      </a>
+      </OutboundLink>
     </article>
   );
 }

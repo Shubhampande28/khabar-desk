@@ -13,7 +13,13 @@ const headline = Newsreader({
   subsets: ["latin"],
   variable: "--font-headline",
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"]
+  style: ["normal", "italic"],
+  // next/font couldn't find size-adjustment metrics for this font/weight
+  // combo to build an automatic fallback ("Failed to find font override
+  // values for font Newsreader") — fall back to a plain serif stack
+  // instead of letting it keep trying.
+  adjustFontFallback: false,
+  fallback: ["Georgia", "serif"]
 });
 
 const body = Public_Sans({

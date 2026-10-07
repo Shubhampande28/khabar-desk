@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import { Article } from "./types";
+import { cleanTitle, cleanDescription } from "./textClean";
 
 const parser = new Parser({
   customFields: {
@@ -69,11 +70,11 @@ async function fetchOneFeed(url: string): Promise<Article[]> {
   const sourceName = sourceNameFromUrl(url);
 
   return (feed.items || []).map((item) => ({
-    title: item.title?.trim() || "Untitled",
+    title: cleanTitle(item.title) || "Untitled",
     link: item.link?.trim() || "#",
     source: sourceName,
     isoDate: item.isoDate || null,
-    contentSnippet: item.contentSnippet?.trim().slice(0, 180) || null,
+    contentSnippet: cleanDescription(item.contentSnippet, 300),
     image: extractImage(item)
   }));
 }

@@ -8,11 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "check-feeds": "tsx scripts/check-feeds.ts",
-    "ingest": "tsx scripts/ingest.ts"
+    "ingest": "tsx scripts/ingest.ts",
+    "clean-text": "tsx scripts/clean-text.ts",
+    "test": "tsx --test lib/**/*.test.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "better-sqlite3": "^13.0.3",
+    "entities": "^2.2.0",
     "next": "14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1",

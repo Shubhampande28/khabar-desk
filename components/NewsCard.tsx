@@ -77,7 +77,7 @@ export function FeaturedCard({
         )}
         {article.contentSnippet && (
           <p className="mt-1 text-sm leading-relaxed text-inkSoft">
-            {article.contentSnippet}…
+            {article.contentSnippet}
           </p>
         )}
         <Meta article={article} accent={accent} />

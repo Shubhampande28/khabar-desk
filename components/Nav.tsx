@@ -3,19 +3,25 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { categories } from "@/lib/sources";
+import { trackCategoryClick } from "@/lib/analytics";
 
 function NavLink({
   href,
   label,
-  active
+  active,
+  category,
+  fromPage
 }: {
   href: string;
   label: string;
   active: boolean;
+  category?: string;
+  fromPage: string;
 }) {
   return (
     <Link
       href={href}
+      onClick={() => category && trackCategoryClick({ category, fromPage })}
       className={`group relative whitespace-nowrap pb-1 transition-colors ${
         active ? "font-semibold text-ink" : "text-inkSoft hover:text-ink"
       }`}
@@ -35,13 +41,15 @@ export default function Nav() {
 
   return (
     <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto border-t border-line px-4 py-2.5 text-sm sm:px-6">
-      <NavLink href="/" label="Home" active={pathname === "/"} />
+      <NavLink href="/" label="Home" active={pathname === "/"} fromPage={pathname} />
       {categories.map((c) => (
         <NavLink
           key={c.slug}
           href={`/category/${c.slug}`}
           label={c.label}
           active={pathname.startsWith(`/category/${c.slug}`)}
+          category={c.slug}
+          fromPage={pathname}
         />
       ))}
     </nav>

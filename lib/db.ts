@@ -5,6 +5,7 @@ import { Article } from "./types";
 import { capBySource } from "./rss";
 import { getCategory } from "./sources";
 import { encodeStorySlug } from "./story";
+import { cleanTitle, cleanDescription } from "./textClean";
 
 const DB_DIR = process.env.DB_DIR || path.join(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "articles.db");
@@ -172,6 +173,38 @@ export function getArticlesForSitemap(
     )
     .all(categorySlug, sinceIso, ...excludeParams, limit) as ArticleRow[];
   return rows.map(rowToArticle);
+}
+
+// One-off cleanup for rows ingested before HTML-entity/markup cleaning
+// existed at ingest time (see lib/textClean.ts and scripts/clean-text.ts).
+// Only touches the display columns — never the frozen `slug`, which embeds
+// whatever text was true when that article's URL was first issued and must
+// stay byte-for-byte stable (see the slug-freezing comment on insertStmt).
+export function cleanStoredArticleText(): { scanned: number; updated: number } {
+  const rows = db.prepare("SELECT id, title, content_snippet FROM articles").all() as {
+    id: number;
+    title: string;
+    content_snippet: string | null;
+  }[];
+
+  const update = db.prepare(
+    "UPDATE articles SET title = @title, content_snippet = @contentSnippet WHERE id = @id"
+  );
+
+  let updated = 0;
+  const run = db.transaction(() => {
+    for (const row of rows) {
+      const title = cleanTitle(row.title) || row.title;
+      const contentSnippet = cleanDescription(row.content_snippet, 300);
+      if (title !== row.title || contentSnippet !== row.content_snippet) {
+        update.run({ id: row.id, title, contentSnippet });
+        updated++;
+      }
+    }
+  });
+  run();
+
+  return { scanned: rows.length, updated };
 }
 
 export type SearchResult = Article & { categorySlug: string };
