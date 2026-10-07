@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { getCategory, CATEGORY_CHILDREN } from "@/lib/sources";
 import { getArchivePage } from "@/lib/db";
@@ -34,7 +34,13 @@ export default function ArchivePage({
     CATEGORY_CHILDREN[category.slug] ?? []
   );
 
-  if (page > 1 && articles.length === 0) notFound();
+  // A page number can be valid when Google indexes it and later fall out of
+  // range as the archive's size shifts — that's not "this content doesn't
+  // exist," just "it's not at this offset anymore," so send visitors (and
+  // crawlers) to the nearest real page instead of a dead end.
+  if (page > totalPages) {
+    redirect(`/category/${category.slug}/archive?page=${totalPages}`);
+  }
 
   return (
     <section className="py-10">

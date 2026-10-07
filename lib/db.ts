@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import { Article } from "./types";
 import { capBySource } from "./rss";
+import { getCategory } from "./sources";
+import { encodeStorySlug } from "./story";
 
 const DB_DIR = process.env.DB_DIR || path.join(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "articles.db");
@@ -30,21 +32,42 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_articles_link ON articles(link);
 `);
 
+// Added after the initial schema — older deployed DBs won't have this
+// column yet, so add it if missing rather than assuming a fresh table.
+const hasSlugColumn = (
+  db.prepare("PRAGMA table_info(articles)").all() as { name: string }[]
+).some((col) => col.name === "slug");
+if (!hasSlugColumn) {
+  db.exec("ALTER TABLE articles ADD COLUMN slug TEXT");
+}
+
+// A story's /story/[slug] URL embeds the article's data directly (see
+// lib/story.ts) so it keeps resolving even after the row disappears from
+// the feed window. But re-ingesting the same article can update its title/
+// image/excerpt in place (publishers edit headlines after posting) — if the
+// slug were regenerated from that live data on every render, the same
+// story's URL would drift every time its row changed. So the slug is
+// generated once, the first time a (link, category) pair is inserted, and
+// frozen from then on: ON CONFLICT never overwrites an existing slug, only
+// backfills one for rows that predate this column (COALESCE keeps update
+// time slug's whatever frozen value is already there if one exists).
 const insertStmt = db.prepare(`
   INSERT INTO articles
-    (link, category_slug, title, source, iso_date, image, content_snippet, first_seen_at)
+    (link, category_slug, title, source, iso_date, image, content_snippet, first_seen_at, slug)
   VALUES
-    (@link, @categorySlug, @title, @source, @isoDate, @image, @contentSnippet, @firstSeenAt)
+    (@link, @categorySlug, @title, @source, @isoDate, @image, @contentSnippet, @firstSeenAt, @slug)
   ON CONFLICT(link, category_slug) DO UPDATE SET
     title = excluded.title,
     source = excluded.source,
     iso_date = excluded.iso_date,
     image = excluded.image,
-    content_snippet = excluded.content_snippet
+    content_snippet = excluded.content_snippet,
+    slug = COALESCE(articles.slug, excluded.slug)
 `);
 
 export function upsertArticles(categorySlug: string, articles: Article[]): void {
   const now = new Date().toISOString();
+  const category = getCategory(categorySlug);
   const insertMany = db.transaction((items: Article[]) => {
     for (const a of items) {
       insertStmt.run({
@@ -55,7 +78,8 @@ export function upsertArticles(categorySlug: string, articles: Article[]): void 
         isoDate: a.isoDate,
         image: a.image,
         contentSnippet: a.contentSnippet,
-        firstSeenAt: now
+        firstSeenAt: now,
+        slug: category ? encodeStorySlug(a, category) : null
       });
     }
   });
@@ -69,6 +93,7 @@ type ArticleRow = {
   iso_date: string | null;
   image: string | null;
   content_snippet: string | null;
+  slug: string | null;
 };
 
 function rowToArticle(row: ArticleRow): Article {
@@ -78,7 +103,8 @@ function rowToArticle(row: ArticleRow): Article {
     source: row.source,
     isoDate: row.iso_date,
     image: row.image,
-    contentSnippet: row.content_snippet
+    contentSnippet: row.content_snippet,
+    slug: row.slug
   };
 }
 
@@ -111,7 +137,7 @@ export function getRecentArticles(
   const { sql: excludeSql, params: excludeParams } = exclusionClause(excludeCategorySlugs);
   const rows = db
     .prepare(
-      `SELECT link, title, source, iso_date, image, content_snippet
+      `SELECT link, title, source, iso_date, image, content_snippet, slug
        FROM articles
        WHERE category_slug = ? ${excludeSql}
        ORDER BY iso_date DESC
@@ -138,7 +164,7 @@ export function getArticlesForSitemap(
   const { sql: excludeSql, params: excludeParams } = exclusionClause(excludeCategorySlugs);
   const rows = db
     .prepare(
-      `SELECT link, title, source, iso_date, image, content_snippet
+      `SELECT link, title, source, iso_date, image, content_snippet, slug
        FROM articles
        WHERE category_slug = ? AND iso_date >= ? ${excludeSql}
        ORDER BY iso_date DESC
@@ -146,6 +172,34 @@ export function getArticlesForSitemap(
     )
     .all(categorySlug, sinceIso, ...excludeParams, limit) as ArticleRow[];
   return rows.map(rowToArticle);
+}
+
+export type SearchResult = Article & { categorySlug: string };
+
+// Simple title search across every category — backs the search box on the
+// 404 page. LIKE on an un-indexed column is fine at this table's size; add
+// an index or FTS5 if the archive grows large enough for it to matter.
+export function searchArticles(query: string, limit = 20): SearchResult[] {
+  const trimmed = query.trim();
+  if (!trimmed) return [];
+  const rows = db
+    .prepare(
+      `SELECT link, title, source, iso_date, image, content_snippet, slug, category_slug
+       FROM articles
+       WHERE title LIKE ?
+       ORDER BY iso_date DESC
+       LIMIT ?`
+    )
+    .all(`%${trimmed}%`, limit) as (ArticleRow & { category_slug: string })[];
+
+  const seen = new Set<string>();
+  const results: SearchResult[] = [];
+  for (const row of rows) {
+    if (seen.has(row.link)) continue;
+    seen.add(row.link);
+    results.push({ ...rowToArticle(row), categorySlug: row.category_slug });
+  }
+  return results;
 }
 
 export function getArchivePage(
@@ -159,7 +213,7 @@ export function getArchivePage(
 
   const rows = db
     .prepare(
-      `SELECT link, title, source, iso_date, image, content_snippet
+      `SELECT link, title, source, iso_date, image, content_snippet, slug
        FROM articles
        WHERE category_slug = ? ${excludeSql}
        ORDER BY iso_date DESC

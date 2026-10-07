@@ -7,6 +7,10 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/"
     },
-    sitemap: [`${SITE_URL}/sitemap.xml`, `${SITE_URL}/sitemap-stories.xml`]
+    sitemap: [
+      `${SITE_URL}/sitemap.xml`,
+      `${SITE_URL}/sitemap-stories.xml`,
+      `${SITE_URL}/news-sitemap.xml`
+    ]
   };
 }

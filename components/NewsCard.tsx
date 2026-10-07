@@ -28,7 +28,8 @@ function storyHref(
   accent: AccentColor,
   category: CardCategory
 ): string {
-  return `/story/${encodeStorySlug(article, { ...category, color: accent })}`;
+  const slug = article.slug || encodeStorySlug(article, { ...category, color: accent });
+  return `/story/${slug}`;
 }
 
 export function FeaturedCard({

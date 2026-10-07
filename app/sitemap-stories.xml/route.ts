@@ -25,11 +25,13 @@ export async function GET() {
       CATEGORY_CHILDREN[category.slug] ?? []
     );
     for (const article of articles) {
-      const slug = encodeStorySlug(article, {
-        slug: category.slug,
-        label: category.label,
-        color: category.color
-      });
+      const slug =
+        article.slug ||
+        encodeStorySlug(article, {
+          slug: category.slug,
+          label: category.label,
+          color: category.color
+        });
       const loc = escapeXml(`${SITE_URL}/story/${slug}`);
       const lastmod = article.isoDate ?? new Date().toISOString();
       urls.push(`<url><loc>${loc}</loc><lastmod>${lastmod}</lastmod></url>`);
