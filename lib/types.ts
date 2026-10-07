@@ -9,4 +9,6 @@ export type Article = {
   // regenerated after — see lib/db.ts. Null only for rows ingested before
   // this field existed that haven't been re-seen by a feed since.
   slug?: string | null;
+  // Editor-curated (Milestone 3) — only set when fetched with featuredFirst.
+  isFeatured?: boolean;
 };

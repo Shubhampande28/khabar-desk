@@ -35,12 +35,37 @@ db.exec(`
 
 // Added after the initial schema — older deployed DBs won't have this
 // column yet, so add it if missing rather than assuming a fresh table.
-const hasSlugColumn = (
-  db.prepare("PRAGMA table_info(articles)").all() as { name: string }[]
-).some((col) => col.name === "slug");
-if (!hasSlugColumn) {
-  db.exec("ALTER TABLE articles ADD COLUMN slug TEXT");
+const existingColumns = new Set(
+  (db.prepare("PRAGMA table_info(articles)").all() as { name: string }[]).map(
+    (col) => col.name
+  )
+);
+function addColumnIfMissing(name: string, ddl: string) {
+  if (existingColumns.has(name)) return;
+  try {
+    db.exec(`ALTER TABLE articles ADD COLUMN ${ddl}`);
+  } catch (err) {
+    // Next's build-time page-data collection loads this module from
+    // several route bundles concurrently, each with its own in-process
+    // connection to the same file — two can both see the column missing
+    // and race to add it. Harmless as long as it's genuinely this error.
+    const message = err instanceof Error ? err.message : String(err);
+    if (!message.includes("duplicate column name")) throw err;
+  }
+  existingColumns.add(name);
 }
+addColumnIfMissing("slug", "slug TEXT");
+
+// Milestone 3: original editorial value layered on top of the aggregated
+// link. our_summary/why_it_matters/editor_name/reviewed_at are only ever
+// shown publicly once reviewed_at is set — see getArticleEditorial and the
+// story page's noindex handling for unreviewed rows.
+addColumnIfMissing("our_summary", "our_summary TEXT");
+addColumnIfMissing("why_it_matters", "why_it_matters TEXT");
+addColumnIfMissing("editor_name", "editor_name TEXT");
+addColumnIfMissing("reviewed_at", "reviewed_at TEXT");
+addColumnIfMissing("is_featured", "is_featured INTEGER NOT NULL DEFAULT 0");
+addColumnIfMissing("content_warning", "content_warning INTEGER NOT NULL DEFAULT 0");
 
 // A story's /story/[slug] URL embeds the article's data directly (see
 // lib/story.ts) so it keeps resolving even after the row disappears from
@@ -129,25 +154,55 @@ function exclusionClause(excludeCategorySlugs: string[]): {
 
 // Pulls a generous recent window so the diversity-capping logic (same one
 // the old live-fetch path used) has enough supply per source to work with,
-// then trims to `limit` for display.
+// then trims to `limit` for display. `featuredFirst` sorts reviewed/
+// featured stories to the front of that window before the date sort and
+// diversity capping run — used by the homepage per Milestone 3; category
+// rails stay plain-chronological.
 export function getRecentArticles(
   categorySlug: string,
   limit: number,
-  excludeCategorySlugs: string[] = []
+  excludeCategorySlugs: string[] = [],
+  featuredFirst = false
 ): Article[] {
   const { sql: excludeSql, params: excludeParams } = exclusionClause(excludeCategorySlugs);
   const rows = db
     .prepare(
-      `SELECT link, title, source, iso_date, image, content_snippet, slug
+      `SELECT link, title, source, iso_date, image, content_snippet, slug, is_featured
        FROM articles
        WHERE category_slug = ? ${excludeSql}
        ORDER BY iso_date DESC
        LIMIT ?`
     )
-    .all(categorySlug, ...excludeParams, Math.max(limit * 6, 60)) as ArticleRow[];
+    .all(categorySlug, ...excludeParams, Math.max(limit * 6, 60)) as (ArticleRow & {
+    is_featured: number;
+  })[];
 
-  const articles = rows.map(rowToArticle);
-  return capBySource(articles, limit).slice(0, limit);
+  const articles = rows.map((row) => ({
+    ...rowToArticle(row),
+    isFeatured: row.is_featured === 1
+  }));
+
+  if (!featuredFirst) {
+    return capBySource(articles, limit).slice(0, limit);
+  }
+
+  // capBySource always ends by re-sorting strictly by date and cuts to
+  // `limit` before any featured-precedence could be applied — fatal for a
+  // single-feed category (capBySource is a no-op there), where an older
+  // featured story would get sliced out of the date-only window before it
+  // ever had a chance to be promoted. So featured and non-featured are
+  // capped as separate pools and concatenated, guaranteeing featured
+  // articles (already date-sorted from the query) occupy the front slots.
+  const featured = articles.filter((a) => a.isFeatured).slice(0, limit);
+  const remainingSlots = limit - featured.length;
+  const rest =
+    remainingSlots > 0
+      ? capBySource(
+          articles.filter((a) => !a.isFeatured),
+          remainingSlots
+        ).slice(0, remainingSlots)
+      : [];
+  return [...featured, ...rest];
 }
 
 // For the dynamic story sitemap: recent articles, per category, so each
@@ -233,6 +288,146 @@ export function searchArticles(query: string, limit = 20): SearchResult[] {
     results.push({ ...rowToArticle(row), categorySlug: row.category_slug });
   }
   return results;
+}
+
+export type ArticleEditorial = {
+  ourSummary: string | null;
+  whyItMatters: string | null;
+  editorName: string | null;
+  reviewedAt: string | null;
+  isFeatured: boolean;
+  contentWarning: boolean;
+};
+
+// The story page is otherwise fully self-contained (see lib/story.ts) —
+// this is the one place it touches the DB, to pick up editorial review
+// state layered on afterward. Keyed by (link, category_slug) since that's
+// the row's real identity; the slug itself can't be used as a key because
+// it's a frozen snapshot, not a pointer.
+export function getArticleEditorial(
+  link: string,
+  categorySlug: string
+): ArticleEditorial | null {
+  const row = db
+    .prepare(
+      `SELECT our_summary, why_it_matters, editor_name, reviewed_at, is_featured, content_warning
+       FROM articles WHERE link = ? AND category_slug = ?`
+    )
+    .get(link, categorySlug) as
+    | {
+        our_summary: string | null;
+        why_it_matters: string | null;
+        editor_name: string | null;
+        reviewed_at: string | null;
+        is_featured: number;
+        content_warning: number;
+      }
+    | undefined;
+  if (!row) return null;
+  return {
+    ourSummary: row.our_summary,
+    whyItMatters: row.why_it_matters,
+    editorName: row.editor_name,
+    reviewedAt: row.reviewed_at,
+    isFeatured: row.is_featured === 1,
+    contentWarning: row.content_warning === 1
+  };
+}
+
+export type AdminArticleRow = {
+  id: number;
+  link: string;
+  title: string;
+  source: string;
+  categorySlug: string;
+  isoDate: string | null;
+  contentSnippet: string | null;
+} & ArticleEditorial;
+
+// Backs /admin: today's ingested stories (by first_seen_at, so re-ingested
+// older stories that merely got their title/image refreshed don't count),
+// optionally filtered to one category.
+export function getTodayArticlesForReview(categorySlug?: string): AdminArticleRow[] {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const categoryClause = categorySlug ? "AND category_slug = ?" : "";
+  const params = categorySlug
+    ? [todayStart.toISOString(), categorySlug]
+    : [todayStart.toISOString()];
+
+  const rows = db
+    .prepare(
+      `SELECT id, link, title, source, category_slug, iso_date, content_snippet,
+              our_summary, why_it_matters, editor_name, reviewed_at, is_featured, content_warning
+       FROM articles
+       WHERE first_seen_at >= ? ${categoryClause}
+       ORDER BY iso_date DESC`
+    )
+    .all(...params) as {
+    id: number;
+    link: string;
+    title: string;
+    source: string;
+    category_slug: string;
+    iso_date: string | null;
+    content_snippet: string | null;
+    our_summary: string | null;
+    why_it_matters: string | null;
+    editor_name: string | null;
+    reviewed_at: string | null;
+    is_featured: number;
+    content_warning: number;
+  }[];
+
+  return rows.map((row) => ({
+    id: row.id,
+    link: row.link,
+    title: row.title,
+    source: row.source,
+    categorySlug: row.category_slug,
+    isoDate: row.iso_date,
+    contentSnippet: row.content_snippet,
+    ourSummary: row.our_summary,
+    whyItMatters: row.why_it_matters,
+    editorName: row.editor_name,
+    reviewedAt: row.reviewed_at,
+    isFeatured: row.is_featured === 1,
+    contentWarning: row.content_warning === 1
+  }));
+}
+
+// Saving a draft (reviewed = false) keeps it private — only a reviewed
+// save (the editor ticking "I reviewed this") sets reviewed_at/editor_name
+// and makes our_summary/why_it_matters eligible to show publicly; see
+// getArticleEditorial's callers for the reviewed_at gate.
+export function saveArticleEditorial(params: {
+  id: number;
+  ourSummary: string;
+  whyItMatters: string;
+  isFeatured: boolean;
+  contentWarning: boolean;
+  reviewed: boolean;
+  editorName: string;
+}): void {
+  db.prepare(
+    `UPDATE articles SET
+       our_summary = @ourSummary,
+       why_it_matters = @whyItMatters,
+       is_featured = @isFeatured,
+       content_warning = @contentWarning,
+       reviewed_at = CASE WHEN @reviewed = 1 THEN @now ELSE reviewed_at END,
+       editor_name = CASE WHEN @reviewed = 1 THEN @editorName ELSE editor_name END
+     WHERE id = @id`
+  ).run({
+    id: params.id,
+    ourSummary: params.ourSummary,
+    whyItMatters: params.whyItMatters,
+    isFeatured: params.isFeatured ? 1 : 0,
+    contentWarning: params.contentWarning ? 1 : 0,
+    reviewed: params.reviewed ? 1 : 0,
+    editorName: params.editorName,
+    now: new Date().toISOString()
+  });
 }
 
 export function getArchivePage(

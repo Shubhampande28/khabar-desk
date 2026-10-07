@@ -13,7 +13,7 @@ export default function HomePage() {
   const topCategory = getCategory("top")!;
   const otherCategories = categories.filter((c) => c.slug !== "top");
 
-  const topArticles = getRecentArticles(topCategory.slug, 6);
+  const topArticles = getRecentArticles(topCategory.slug, 6, [], true);
   const [heroArticle, ...restTop] = topArticles;
 
   return (
@@ -69,7 +69,8 @@ export default function HomePage() {
             articles={getRecentArticles(
               category.slug,
               4,
-              CATEGORY_CHILDREN[category.slug] ?? []
+              CATEGORY_CHILDREN[category.slug] ?? [],
+              true
             )}
           />
           {i === 1 && <AdSlot />}

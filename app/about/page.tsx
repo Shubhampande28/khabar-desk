@@ -26,8 +26,13 @@ export default function AboutPage() {
           actual reporting lives.
         </p>
         <p>
-          The site refreshes automatically roughly every 15 minutes and has
-          no editorial staff — it's a personal project, not a newsroom.
+          The site refreshes automatically roughly every 15 minutes. Most
+          headlines link straight to the source with no added commentary.
+          A small number of stories are additionally reviewed by Khabar
+          Adda Editorial, who writes a short original summary and context
+          note above the source link — those are marked "Reviewed by
+          Khabar Adda Editorial" on the story page. This is still a
+          one-person project, not a newsroom.
         </p>
       </div>
     </section>
